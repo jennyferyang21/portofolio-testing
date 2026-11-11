@@ -1,0 +1,4 @@
+# Hanya file website yang disimpan ke GitHub. File lain (draf, versi lama) tetap di laptop saja.
+*
+!.gitignore
+!jee-porto.html
