@@ -27,18 +27,33 @@
   --out:cubic-bezier(.16,1,.3,1);
   --io:cubic-bezier(.65,0,.35,1);
   --pop:cubic-bezier(.34,1.56,.64,1);
+  /* ukuran huruf: aturan wajib Jenny 15 Nov (JENNY.md 9.14). Satuan rem, 1rem = 16px.
+     H1 32-48px, H2 24-32px, H3 20-24px, paragraf 16-18px, teks kecil 13-14px. */
+  --fs-h1:clamp(2rem,1.2rem + 1.6vw,3rem);
+  --fs-h2:clamp(1.5rem,1rem + .9vw,2rem);
+  --fs-h3:clamp(1.25rem,1rem + .4vw,1.5rem);
+  --fs-lead:clamp(1rem,.95rem + .2vw,1.125rem);
+  --fs-body:1rem;
+  /* jarak kiri-kanan isi halaman (R15, 15 Nov): 24px di layar kecil, sampai 64px di laptop */
+  --gut:clamp(24px,5vw,64px);
+  --fs-small:.875rem;
+  --fs-cap:.8125rem;
+  /* kursor tangan kucing (R11, 15 Nov): gambar kursor biasa, digambar langsung oleh sistem, jadi tanpa delay */
+  --paw:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><g transform='rotate(-15 16 17)' fill='%23FF8FB3' stroke='%2322080F' stroke-width='1.5' stroke-linejoin='round'><path d='M16 16.5c-3.9 0-7.6 3.5-7.6 7 0 2.5 1.9 3.8 4.1 3.8 1.4 0 2.3-.7 3.5-.7s2.1.7 3.5.7c2.2 0 4.1-1.3 4.1-3.8 0-3.5-3.7-7-7.6-7z'/><ellipse cx='7.4' cy='14.2' rx='2.3' ry='2.9' transform='rotate(-25 7.4 14.2)'/><ellipse cx='12.1' cy='8.8' rx='2.5' ry='3.1' transform='rotate(-8 12.1 8.8)'/><ellipse cx='19.9' cy='8.8' rx='2.5' ry='3.1' transform='rotate(8 19.9 8.8)'/><ellipse cx='24.6' cy='14.2' rx='2.3' ry='2.9' transform='rotate(25 24.6 14.2)'/></g></svg>") 14 5, auto;
+  --paw-hov:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><g transform='rotate(-15 16 17)' fill='%23FF5C93' stroke='%23FFFFFF' stroke-width='1.5' stroke-linejoin='round'><path d='M16 16.5c-3.9 0-7.6 3.5-7.6 7 0 2.5 1.9 3.8 4.1 3.8 1.4 0 2.3-.7 3.5-.7s2.1.7 3.5.7c2.2 0 4.1-1.3 4.1-3.8 0-3.5-3.7-7-7.6-7z'/><ellipse cx='7.4' cy='14.2' rx='2.3' ry='2.9' transform='rotate(-25 7.4 14.2)'/><ellipse cx='12.1' cy='8.8' rx='2.5' ry='3.1' transform='rotate(-8 12.1 8.8)'/><ellipse cx='19.9' cy='8.8' rx='2.5' ry='3.1' transform='rotate(8 19.9 8.8)'/><ellipse cx='24.6' cy='14.2' rx='2.3' ry='2.9' transform='rotate(25 24.6 14.2)'/></g></svg>") 14 5, pointer;
 }
 [hidden]{display:none!important}
 *,*::before,*::after{box-sizing:border-box}
 h1,h2,h3,p,figure,blockquote,dl,dd{margin:0}
-html{background:var(--bg)}
-body{background:var(--bg);color:var(--ink);font-family:var(--text);font-size:17px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+html{background:var(--bg);cursor:var(--paw)}
+body{background:var(--bg);color:var(--ink);font-family:var(--text);font-size:var(--fs-body);line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
-button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+button{font:inherit;color:inherit;background:none;border:0}
+a,button,.tool,.dk,.stage{cursor:var(--paw-hov)}
 :focus-visible{outline:2px solid var(--rose);outline-offset:3px;border-radius:8px}
 h1:focus,h2:focus{outline:none}
 ::selection{background:var(--rose);color:var(--rose-ink)}
-.wrap{width:min(1280px,100%);margin-inline:auto;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+.wrap{width:min(1280px,100%);margin-inline:auto;padding-left:max(var(--gut),env(safe-area-inset-left,0px));padding-right:max(var(--gut),env(safe-area-inset-right,0px))}
 main{overflow-x:clip;position:relative;z-index:1}
 
 /* ---------- ambient background ---------- */
@@ -59,38 +74,31 @@ main{overflow-x:clip;position:relative;z-index:1}
 /* ---------- nav: glass capsule with liquid indicator ---------- */
 .nav-wrap{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:center;padding-top:calc(env(safe-area-inset-top,0px) + 14px);padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));pointer-events:none}
 .nav{pointer-events:auto;display:flex;align-items:center;gap:4px;padding:6px;border-radius:999px;background:rgba(16,19,29,.55)}
-.brand{font-family:var(--display);font-variation-settings:"wght" 700,"opsz" 24;font-size:18px;letter-spacing:-.02em;padding:9px 14px 9px 16px;display:flex;align-items:center;gap:8px}
+.brand{font-family:var(--display);font-variation-settings:"wght" 700,"opsz" 24;font-size:1.125rem;letter-spacing:-.02em;padding:9px 14px 9px 16px;display:flex;align-items:center;gap:8px}
 .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--rose);animation:breathe 2.6s var(--io) infinite}
 @keyframes breathe{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.6);opacity:.6}}
 .links{position:relative;display:flex}
-.links a{position:relative;z-index:1;padding:9px 16px;border-radius:999px;font-size:15px;font-weight:500;color:var(--soft);transition:color .3s var(--out)}
+.links a{position:relative;z-index:1;padding:9px 16px;border-radius:999px;font-size:.9375rem;font-weight:500;color:var(--soft);transition:color .3s var(--out)}
 .links a:hover{color:var(--ink)}
 .links a[aria-current="page"]{color:var(--rose-ink);font-weight:600}
 .blob{position:absolute;top:0;bottom:0;left:0;width:0;border-radius:999px;background:var(--rose);z-index:0}
 
-/* ---------- cursor ---------- */
-.cur-dot,.cur-ring{position:fixed;left:0;top:0;z-index:200;pointer-events:none;border-radius:50%;opacity:0;transition:opacity .3s}
-.cur-on .cur-dot,.cur-on .cur-ring{opacity:1}
-.cur-dot{width:6px;height:6px;margin:-3px 0 0 -3px;background:var(--rose)}
-.cur-ring{width:38px;height:38px;margin:-19px 0 0 -19px;border:1px solid rgba(255,255,255,.5);display:grid;place-items:center;font-size:13px;font-weight:600;color:var(--rose-ink);transition:width .35s var(--out),height .35s var(--out),margin .35s var(--out),background-color .3s,border-color .3s,opacity .3s,scale .2s}
-.cur-ring.hov{width:62px;height:62px;margin:-31px 0 0 -31px;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.25)}
-.cur-ring.lbl{width:86px;height:86px;margin:-43px 0 0 -43px;background:var(--rose);border-color:transparent}
-.cur-ring.down{scale:.82}
-.has-cursor,.has-cursor *{cursor:none!important}
-
 /* ---------- shared type ---------- */
-.h2{font-family:var(--display);font-size:clamp(40px,5.4vw,80px);line-height:.98;letter-spacing:-.035em;font-variation-settings:"wght" 600,"opsz" 96;font-weight:600;text-wrap:balance}
-.h3{font-family:var(--display);font-size:clamp(24px,2.2vw,32px);line-height:1.1;letter-spacing:-.02em;font-variation-settings:"wght" 600,"opsz" 48;font-weight:600}
-.lead{font-size:clamp(18px,1.5vw,21px);line-height:1.55;max-width:46ch}
-.statement{font-size:clamp(23px,2.3vw,33px);line-height:1.3;letter-spacing:-.01em;max-width:30ch;font-weight:500}
+.h2{font-family:var(--display);font-size:var(--fs-h2);line-height:1.15;letter-spacing:-.02em;font-variation-settings:"wght" 600,"opsz" 32;font-weight:600;text-wrap:balance}
+.h3{font-family:var(--display);font-size:var(--fs-h3);line-height:1.2;letter-spacing:-.01em;font-variation-settings:"wght" 600,"opsz" 24;font-weight:600}
+.lead{font-size:var(--fs-lead);line-height:1.5;max-width:60ch}
+.statement{font-size:clamp(1.125rem,1rem + .35vw,1.375rem);line-height:1.45;letter-spacing:-.005em;max-width:40ch;font-weight:500}
 .soft{color:var(--soft)}
 .sec{padding-block:clamp(96px,12vw,180px);position:relative}
 .sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;margin-bottom:clamp(40px,5vw,72px)}
 .sec-head p{max-width:42ch;color:var(--soft)}
+/* pemisah antar bagian di Beranda (R6, 14 Nov): garis tipis + titik pink, di tengah jarak antar bagian */
+.view[data-view="beranda"] .sec:not(:last-child)::after{content:"";position:absolute;left:50%;bottom:calc(clamp(96px,12vw,180px) / 2);width:calc(min(1280px,100%) - 2 * var(--gut));height:1px;translate:-50% 0;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.22) 12%,rgba(255,255,255,.22) 88%,rgba(255,255,255,0));pointer-events:none}
+.view[data-view="beranda"] .sec:not(:last-child)::before{content:"";position:absolute;left:50%;bottom:calc(clamp(96px,12vw,180px) / 2 - 3px);width:7px;height:7px;translate:-50% 0;border-radius:50%;background:var(--rose);box-shadow:0 0 0 6px var(--bg);pointer-events:none;z-index:1}
 
 /* ---------- buttons ---------- */
 .btns{display:flex;gap:12px;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:10px;height:54px;padding:0 26px;border-radius:999px;font-size:16px;font-weight:600;transition:background-color .3s,color .3s,box-shadow .4s var(--out);will-change:transform}
+.btn{display:inline-flex;align-items:center;gap:10px;height:54px;padding:0 26px;border-radius:999px;font-size:1rem;font-weight:600;transition:background-color .3s,color .3s,box-shadow .4s var(--out);will-change:transform}
 .btn .lab{display:inline-flex;align-items:center;gap:10px;pointer-events:none}
 .btn svg{width:18px;height:18px}
 .btn-main{background:var(--rose);color:var(--rose-ink)}
@@ -111,7 +119,7 @@ main{overflow-x:clip;position:relative;z-index:1}
 /* ---------- hero ---------- */
 .hero{position:relative;min-height:clamp(640px,94svh,940px);display:grid;place-items:center;overflow:clip;padding-top:90px;padding-bottom:40px}
 .hero-in{position:relative;z-index:2;text-align:center;display:grid;justify-items:center;gap:28px}
-.name{font-family:var(--display);font-size:clamp(58px,10.6vw,170px);line-height:.92;letter-spacing:-.045em;font-variation-settings:"wght" 480,"opsz" 96;font-weight:500;text-wrap:balance}
+.name{font-family:var(--display);font-size:clamp(2.75rem,1rem + 5vw,6rem);line-height:.92;letter-spacing:-.045em;font-variation-settings:"wght" 480,"opsz" 96;font-weight:500;text-wrap:balance}
 .name .word{display:inline-block;overflow:hidden;padding:.02em .03em .17em;margin-bottom:-.17em;vertical-align:top}
 .name .ch{display:inline-block}
 .js .name .ch{animation:rise 1s var(--out) both;animation-delay:calc(var(--i) * 40ms + 150ms)}
@@ -126,7 +134,7 @@ main{overflow-x:clip;position:relative;z-index:1}
 .tile::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(160deg,rgba(255,255,255,.22),rgba(255,255,255,0) 45%);pointer-events:none}
 .tile.sm{font-size:calc(var(--ts,64px) * .28)}
 .tile svg{width:46%;height:46%}
-.tip{position:absolute;left:50%;top:calc(100% + 10px);translate:-50% 4px;white-space:nowrap;font-size:13px;font-weight:600;padding:6px 11px;border-radius:999px;background:rgba(16,19,29,.8);border:1px solid var(--edge);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .25s,translate .35s var(--out),visibility .25s}
+.tip{position:absolute;left:50%;top:calc(100% + 10px);translate:-50% 4px;white-space:nowrap;font-size:var(--fs-cap);font-weight:600;padding:6px 11px;border-radius:999px;background:rgba(16,19,29,.8);border:1px solid var(--edge);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .25s,translate .35s var(--out),visibility .25s}
 .tool:hover .tip{opacity:1;visibility:visible;translate:-50% 0}
 .scroll-cue{position:absolute;left:50%;bottom:28px;translate:-50% 0;z-index:2;width:26px;height:42px;border-radius:999px;border:1.5px solid rgba(255,255,255,.35);display:flex;justify-content:center;padding-top:8px}
 .scroll-cue i{width:4px;height:8px;border-radius:4px;background:var(--ink);animation:cue 1.8s var(--out) infinite}
@@ -137,15 +145,15 @@ main{overflow-x:clip;position:relative;z-index:1}
 .about-text{display:grid;gap:28px;min-width:0}
 .about-text .body{max-width:52ch;color:var(--ink)}
 .facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;padding-top:12px}
-.facts dt{font-size:14px;color:var(--soft)}
-.facts dd{margin:4px 0 0;font-weight:600;font-size:16px;line-height:1.4}
+.facts dt{font-size:var(--fs-small);color:var(--soft)}
+.facts dd{margin:4px 0 0;font-weight:600;font-size:1rem;line-height:1.4}
 .phone-wrap{perspective:1200px;display:flex;justify-content:center}
-.phone{width:clamp(250px,24vw,320px);aspect-ratio:9/16;border-radius:42px;padding:16px;position:relative;display:flex;flex-direction:column;transition:transform .6s var(--out);transform-style:preserve-3d}
-.ph-top{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;padding:6px 6px 0}
+.phone{width:clamp(200px,min(22vw,(100svh - 150px) * .5625),300px);aspect-ratio:9/16;border-radius:42px;padding:16px;position:relative;display:flex;flex-direction:column;transition:transform .6s var(--out);transform-style:preserve-3d}
+.ph-top{display:flex;align-items:center;gap:10px;font-size:.875rem;font-weight:600;padding:6px 6px 0}
 .ph-av{width:32px;height:32px;border-radius:50%;background:var(--rose);color:var(--rose-ink);display:grid;place-items:center;font-family:var(--display);font-variation-settings:"wght" 800}
 .ph-screen{flex:1;margin-top:14px;border-radius:28px;background:rgba(9,11,18,.55);display:flex;flex-direction:column;justify-content:center;padding:24px;position:relative;overflow:hidden}
-.ph-screen b{font-family:var(--display);font-size:clamp(64px,7vw,92px);line-height:.9;letter-spacing:-.05em;font-variation-settings:"wght" 800,"opsz" 96;color:var(--rose);font-variant-numeric:tabular-nums}
-.ph-screen span{font-size:16px;font-weight:600;margin-top:8px}
+.ph-screen b{font-family:var(--display);font-size:clamp(2.5rem,4vw,4.25rem);line-height:.9;letter-spacing:-.05em;font-variation-settings:"wght" 800,"opsz" 96;color:var(--rose);font-variant-numeric:tabular-nums}
+.ph-screen span{font-size:1rem;font-weight:600;margin-top:8px}
 .ph-bar{position:absolute;left:20px;right:20px;bottom:18px;height:4px;border-radius:4px;background:rgba(255,255,255,.15);overflow:hidden}
 .ph-bar i{display:block;height:100%;width:40%;background:var(--ink);border-radius:4px;animation:bar 7s linear infinite}
 @keyframes bar{from{width:0}to{width:100%}}
@@ -153,50 +161,62 @@ main{overflow-x:clip;position:relative;z-index:1}
 .ph-side svg{width:26px;height:26px;fill:var(--ink);opacity:.92}
 .ph-side .heart{fill:var(--rose);animation:beat 1.6s var(--pop) infinite}
 @keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.22)}30%{transform:scale(1)}}
-.ph-cap{font-size:14px;line-height:1.45;padding:14px 8px 4px;color:var(--ink)}
+.ph-cap{font-size:.875rem;line-height:1.45;padding:14px 8px 4px;color:var(--ink)}
 
-/* ---------- skills ---------- */
-.skills{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(32px,5vw,80px);align-items:start}
-.skills-left{display:grid;gap:28px;min-width:0}
-.tablist{position:relative;display:grid;gap:4px}
-.tab-blob{position:absolute;left:0;right:0;top:0;height:0;border-radius:22px;background:var(--glass2);border:1px solid var(--edge);z-index:0}
-.tab{position:relative;z-index:1;text-align:left;padding:14px 22px;border-radius:22px;font-family:var(--display);font-size:clamp(22px,2.2vw,32px);line-height:1.15;letter-spacing:-.02em;font-variation-settings:"wght" 500,"opsz" 48;color:var(--soft);display:flex;align-items:center;justify-content:space-between;gap:16px;transition:color .3s,font-variation-settings .4s var(--out)}
-.tab:hover{color:var(--ink)}
-.tab[aria-selected="true"]{color:var(--ink);font-variation-settings:"wght" 650,"opsz" 48}
-.tab .pip{width:10px;height:10px;border-radius:50%;background:var(--rose);scale:0;transition:scale .4s var(--pop);flex:none}
-.tab[aria-selected="true"] .pip{scale:1}
-.panel{border-radius:32px;padding:clamp(28px,3.4vw,48px);display:grid;gap:22px;min-width:0}
-.panel.swap{animation:panelIn .55s var(--out)}
-@keyframes panelIn{from{opacity:0;translate:0 14px}}
-.panel p{max-width:52ch}
+/* ---------- skills: 1 bidang = 1 kartu memanjang, ditumpuk (R1 + R2, 15 Nov) ---------- */
+.sk-list{display:grid;gap:clamp(16px,1.6vw,24px)}
+.sk{border-radius:28px;padding:clamp(22px,2.4vw,34px);background:rgba(255,255,255,.045);border:1px solid var(--edge);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);display:grid;gap:22px;min-width:0}
+.sk-top{display:flex;align-items:center;justify-content:space-between;gap:12px 20px;flex-wrap:wrap;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sk-yr{margin:0;display:inline-flex;align-items:baseline;gap:8px;padding:7px 16px;border-radius:999px;background:rgba(255,143,179,.12);border:1px solid rgba(255,143,179,.28);white-space:nowrap}
+.sk-yr b{color:var(--rose);font-weight:700;font-size:1rem}
+.sk-yr span{color:var(--soft);font-size:var(--fs-small)}
+.sk-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.3fr);gap:clamp(20px,3vw,44px)}
+.sk-col{display:grid;gap:10px;align-content:start;min-width:0}
+.sk-col h4{margin:0;font-size:var(--fs-small);font-weight:600;color:var(--soft)}
+.sk-col ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.sk-col li{position:relative;padding-left:18px;line-height:1.45}
+.sk-col li::before{content:"";position:absolute;left:0;top:.6em;width:6px;height:6px;border-radius:50%;background:var(--rose)}
+.tl{margin:0;display:grid;grid-template-columns:max-content minmax(0,1fr);gap:8px 16px}
+.tl dt{color:var(--soft);font-variant-numeric:tabular-nums;font-size:.9375rem;line-height:1.5}
+.tl dd{margin:0;line-height:1.45}
+.tl + h4{margin-top:14px}
+.sk-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:20px;border-top:1px solid rgba(255,255,255,.08)}
+.sk .btn{height:46px;padding:0 20px;font-size:.9375rem}
+.sk-tools{display:flex;align-items:center;gap:8px 14px;flex-wrap:wrap;min-width:0}
+.sk-tools h4{margin:0;font-size:var(--fs-small);font-weight:600;color:var(--soft)}
 .chips{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
-.chips li{padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.07);font-size:15px;font-weight:500}
-.exp{display:grid;gap:6px;padding:18px 20px;border-radius:20px;background:rgba(9,11,18,.45)}
-.exp b{font-size:14px;color:var(--soft);font-weight:600}
-.exp span{font-size:16px;line-height:1.5}
+.chips li{padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.07);font-size:var(--fs-small);font-weight:500}
+/* masuk dari samping, bergantian kanan-kiri, sekali saja saat pertama terlihat */
+.sk[data-from="r"]{--from:90px}
+.sk[data-from="l"]{--from:-90px}
+.js .sk[data-r].pre{translate:var(--from,0px) 0}
+.js .sk[data-r].in{transition:opacity .9s var(--out),translate 1.1s var(--out)}
 
 /* ---------- tools dock ---------- */
-.dock-zone{display:flex;justify-content:center;padding-block:40px 24px}
-.dock{display:flex;align-items:flex-end;gap:14px;padding:14px 18px;border-radius:30px;list-style:none;margin:0;flex-wrap:wrap;justify-content:center;max-width:100%}
-.dk{position:relative;--ts:58px}
+.dock-zone{display:flex;justify-content:center;padding-block:40px 24px;container-type:inline-size}
+.dock{--g:clamp(6px,.8vw,12px);--pad:clamp(10px,1.2vw,18px);display:flex;align-items:flex-end;gap:var(--g);padding:14px var(--pad);border-radius:30px;list-style:none;margin:0;flex-wrap:nowrap;justify-content:center;max-width:100%}
+/* 1 baris panjang di laptop (R12, 15 Nov): ukuran ikon menyesuaikan lebar supaya semua alat muat */
+.dk{position:relative;flex:none;--ts:min(58px,calc((100cqi - 2px - 2 * var(--pad) - (var(--n,20) - 1) * var(--g)) / var(--n,20)))}
 .dk .tile{transform:translateY(calc(var(--k,0) * -16px)) scale(calc(1 + var(--k,0) * .55));transform-origin:50% 100%;transition:transform .2s var(--out)}
 .dk .tip{top:auto;bottom:calc(100% + 14px + var(--k,0) * 30px)}
 .dk:hover .tip{opacity:1;visibility:visible;translate:-50% 0}
 .groups{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:24px;margin:48px 0 0;padding:0}
 .groups div{min-width:0}
-.groups dt{font-family:var(--display);font-size:22px;font-variation-settings:"wght" 600,"opsz" 32;margin-bottom:6px}
-.groups dd{margin:0;color:var(--soft);font-size:16px;line-height:1.55}
+.groups dt{font-family:var(--display);font-size:var(--fs-h3);font-variation-settings:"wght" 600,"opsz" 24;margin-bottom:6px}
+.groups dd{margin:0;color:var(--soft);font-size:1rem;line-height:1.5}
 
 /* ---------- 3D ring of vertical cards ---------- */
-.stage{position:relative;height:clamp(500px,48vw,640px);perspective:1700px;overflow:hidden;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+/* lebar kartu juga ikut tinggi layar, supaya di laptop pendek masih ada ruang di atas-bawah kartu untuk scroll ke bawah (R14) */
+.stage{--cw:clamp(220px,min(22vw,(100svh - 180px) * .5625),400px);position:relative;height:calc(var(--cw) * 16 / 9 + 120px);perspective:1800px;overflow:hidden;touch-action:pan-y;user-select:none;-webkit-user-select:none}
 .ring{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d}
-.rc{--cw:clamp(190px,17vw,240px);position:absolute;width:var(--cw);height:calc(var(--cw) * 16 / 9);left:calc(var(--cw) / -2);top:calc(var(--cw) * -8 / 9);backface-visibility:hidden;-webkit-backface-visibility:hidden;-webkit-user-drag:none;display:block}
+.rc{position:absolute;width:var(--cw);height:calc(var(--cw) * 16 / 9);left:calc(var(--cw) / -2);top:calc(var(--cw) * -8 / 9);backface-visibility:hidden;-webkit-backface-visibility:hidden;-webkit-user-drag:none;display:block}
 .rc-in{height:100%;border-radius:24px;overflow:hidden;background:var(--c);display:flex;flex-direction:column;transition:transform .6s var(--out),box-shadow .6s var(--out)}
-.rc:hover .rc-in,.rc:focus-visible .rc-in{transform:scale(1.07)}
-.rc.front .rc-in{box-shadow:0 0 0 1px rgba(255,255,255,.35),0 30px 90px -20px var(--c)}
+/* sorotan (R14): ikut kartu di bawah mouse; saat discroll ke samping, sorotan di kartu tengah */
+.rc:focus-visible .rc-in,.rc.front .rc-in{transform:scale(1.05)}
+.rc.front .rc-in{box-shadow:0 0 0 2px rgba(255,255,255,.55),0 30px 90px -20px var(--c)}
 .rc-cap{padding:14px 16px 16px;background:#0E111A;display:grid;gap:2px}
-.rc-cap strong{font-size:15px;line-height:1.3;font-weight:600}
-.rc-cap span{font-size:13px;color:var(--soft)}
+.rc-cap strong{font-size:.9375rem;line-height:1.3;font-weight:600}
+.rc-cap span{font-size:var(--fs-cap);color:var(--soft)}
 .ring-ctrl{display:flex;justify-content:center;align-items:center;gap:12px;margin-top:8px}
 
 /* ---------- artwork stills (drawn per work) ---------- */
@@ -279,11 +299,11 @@ main{overflow-x:clip;position:relative;z-index:1}
 /* ---------- CTA ---------- */
 .cta{position:relative;border-radius:44px;padding:clamp(40px,6vw,96px);overflow:hidden;display:grid;gap:28px}
 .cta::before{content:"";position:absolute;width:70%;aspect-ratio:1;right:-22%;top:-40%;border-radius:50%;background:radial-gradient(circle,rgba(255,143,179,.5),rgba(255,143,179,0) 65%);animation:drift2 18s var(--io) infinite;z-index:-1}
-.cta .h2{max-width:14ch}
+.cta .h2{max-width:22ch}
 
 /* ---------- page tops (CV, Karya, Kontak) ---------- */
 .page-top{padding-top:clamp(140px,16vw,210px);padding-bottom:clamp(40px,5vw,72px);display:grid;gap:24px}
-.page-title{font-family:var(--display);font-size:clamp(54px,9vw,140px);line-height:.92;letter-spacing:-.045em;font-variation-settings:"wght" 560,"opsz" 96;font-weight:600;text-wrap:balance}
+.page-title{font-family:var(--display);font-size:var(--fs-h1);line-height:1.05;letter-spacing:-.03em;font-variation-settings:"wght" 600,"opsz" 48;font-weight:600;text-wrap:balance}
 
 /* ---------- CV ---------- */
 .cv-top{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(32px,5vw,80px);align-items:start}
@@ -293,17 +313,17 @@ main{overflow-x:clip;position:relative;z-index:1}
 .cv-list{list-style:none;margin:0;padding:10px;border-radius:30px;display:grid;gap:4px}
 .cv-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 16px 16px 22px;border-radius:22px;transition:background-color .3s}
 .cv-row:hover{background:rgba(255,255,255,.06)}
-.cv-row b{font-size:18px;font-weight:600;display:block}
-.cv-row small{font-size:14px;color:var(--soft)}
-.cv-row .btn{height:44px;padding:0 18px;font-size:14px;flex:none}
-.cv-row.main b{font-family:var(--display);font-size:24px;font-variation-settings:"wght" 600,"opsz" 32}
+.cv-row b{font-size:1.125rem;font-weight:600;display:block}
+.cv-row small{font-size:var(--fs-small);color:var(--soft)}
+.cv-row .btn{height:44px;padding:0 18px;font-size:.875rem;flex:none}
+.cv-row.main b{font-family:var(--display);font-size:var(--fs-h3);font-variation-settings:"wght" 600,"opsz" 24}
 .cv-doc{display:grid;gap:0;margin-top:48px}
 .cv-sec{display:grid;grid-template-columns:minmax(0,.32fr) minmax(0,1fr);gap:32px;padding-block:36px;position:relative}
 .cv-sec+.cv-sec{border-top:1px solid rgba(255,255,255,.08)}
-.cv-sec h3{font-family:var(--display);font-size:24px;font-variation-settings:"wght" 600,"opsz" 32;letter-spacing:-.01em}
+.cv-sec h3{font-family:var(--display);font-size:var(--fs-h3);font-variation-settings:"wght" 600,"opsz" 24;letter-spacing:-.01em}
 .cv-sec .c{display:grid;gap:22px;min-width:0;max-width:68ch}
-.job b{display:block;font-size:19px;font-weight:600;line-height:1.35}
-.job .when{color:var(--soft);font-size:15px;display:block;margin:2px 0 8px}
+.job b{display:block;font-size:1.125rem;font-weight:600;line-height:1.35}
+.job .when{color:var(--soft);font-size:.9375rem;display:block;margin:2px 0 8px}
 .job ul{margin:0;padding-left:20px;display:grid;gap:6px}
 .more-btn{justify-self:start}
 
@@ -311,7 +331,7 @@ main{overflow-x:clip;position:relative;z-index:1}
 .filters{position:relative;display:flex;gap:4px;padding:6px;border-radius:999px;width:max-content;max-width:100%;overflow-x:auto;scrollbar-width:none}
 .filters::-webkit-scrollbar{display:none}
 .f-blob{position:absolute;top:6px;bottom:6px;left:0;width:0;border-radius:999px;background:var(--ink);z-index:0}
-.chip{position:relative;z-index:1;padding:10px 18px;border-radius:999px;font-size:15px;font-weight:600;color:var(--soft);white-space:nowrap;transition:color .3s}
+.chip{position:relative;z-index:1;padding:10px 18px;border-radius:999px;font-size:.9375rem;font-weight:600;color:var(--soft);white-space:nowrap;transition:color .3s}
 .chip:hover{color:var(--ink)}
 .chip[aria-pressed="true"]{color:var(--bg)}
 .works{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,2.4vw,36px);margin-top:44px}
@@ -320,12 +340,12 @@ main{overflow-x:clip;position:relative;z-index:1}
 .frame{aspect-ratio:4/5;border-radius:28px;overflow:hidden;background:var(--c);display:flex;transition:transform .6s var(--out)}
 .work:hover .frame{transform:translateY(-6px) rotate(-.6deg)}
 .w-meta{display:grid;gap:6px}
-.w-meta h3{font-size:20px;font-weight:600;line-height:1.3}
-.w-meta p{color:var(--soft);font-size:16px;line-height:1.5}
+.w-meta h3{font-size:1.25rem;font-weight:600;line-height:1.3}
+.w-meta p{color:var(--soft);font-size:1rem;line-height:1.5}
 .w-foot{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:4px}
-.tag{font-size:13px;font-weight:600;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.07)}
+.tag{font-size:var(--fs-cap);font-weight:600;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.07)}
 .tag.soon{color:var(--butter)}
-.w-link{font-size:15px;font-weight:600;color:var(--rose);display:inline-flex;align-items:center;gap:6px}
+.w-link{font-size:.9375rem;font-weight:600;color:var(--rose);display:inline-flex;align-items:center;gap:6px}
 .w-link svg{width:16px;height:16px;transition:translate .3s var(--out)}
 .w-link:hover svg{translate:3px -3px}
 .works-more{display:flex;justify-content:center;margin-top:48px}
@@ -333,47 +353,49 @@ main{overflow-x:clip;position:relative;z-index:1}
 /* ---------- Kontak ---------- */
 .contact{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:clamp(32px,5vw,80px);align-items:start;padding-bottom:clamp(80px,10vw,160px)}
 .mail{border-radius:34px;padding:clamp(24px,3vw,40px);display:grid;gap:20px}
-.mail .addr{font-family:var(--display);font-size:clamp(24px,3.4vw,50px);letter-spacing:-.03em;font-variation-settings:"wght" 560,"opsz" 96;line-height:1.05;overflow-wrap:anywhere;user-select:all;-webkit-user-select:all}
+.mail .addr{font-family:var(--display);font-size:var(--fs-h2);letter-spacing:-.02em;font-variation-settings:"wght" 560,"opsz" 32;line-height:1.15;overflow-wrap:anywhere;user-select:all;-webkit-user-select:all}
 .rows{list-style:none;margin:28px 0 0;padding:0;display:grid}
 .rows a,.rows .row-off{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px 6px;border-bottom:1px solid rgba(255,255,255,.08);transition:padding .4s var(--out),color .3s}
 .rows a:hover{padding-left:18px;color:var(--rose)}
-.rows .nm{font-family:var(--display);font-size:clamp(26px,3vw,42px);letter-spacing:-.02em;font-variation-settings:"wght" 520,"opsz" 64;line-height:1.1}
-.rows .hd{color:var(--soft);font-size:15px}
+.rows .nm{font-family:var(--display);font-size:var(--fs-h2);letter-spacing:-.015em;font-variation-settings:"wght" 520,"opsz" 32;line-height:1.15}
+.rows .hd{color:var(--soft);font-size:.9375rem}
 .rows .r-right{display:flex;align-items:center;gap:14px;flex:none}
 .rows svg{width:22px;height:22px;transition:translate .4s var(--out)}
 .rows a:hover svg{translate:4px -4px}
 .side{border-radius:30px;padding:28px;display:grid;gap:22px}
-.side dt{font-size:14px;color:var(--soft)}
+.side dt{font-size:var(--fs-small);color:var(--soft)}
 .side dd{margin:4px 0 0;font-weight:600;line-height:1.45}
-.clock{font-family:var(--display);font-size:56px;line-height:1;letter-spacing:-.03em;font-variation-settings:"wght" 600,"opsz" 96;font-variant-numeric:tabular-nums}
-.clock small{font-family:var(--text);font-size:15px;color:var(--soft);letter-spacing:0;font-weight:500;margin-left:8px}
+.clock{font-family:var(--display);font-size:var(--fs-h1);line-height:1;letter-spacing:-.03em;font-variation-settings:"wght" 600,"opsz" 48;font-variant-numeric:tabular-nums}
+.clock small{font-family:var(--text);font-size:.9375rem;color:var(--soft);letter-spacing:0;font-weight:500;margin-left:8px}
 
 /* ---------- footer ---------- */
 .foot{position:relative;z-index:1;padding-top:60px;padding-bottom:calc(28px + env(safe-area-inset-bottom,0px));overflow:hidden}
-.foot-word{font-family:var(--display);font-size:clamp(76px,18.5vw,300px);line-height:.82;letter-spacing:-.06em;font-variation-settings:"wght" 600,"opsz" 96;white-space:nowrap;display:block;margin-bottom:28px}
+.foot-word{font-family:var(--display);font-size:clamp(4rem,12vw,10rem);line-height:.82;letter-spacing:-.06em;font-variation-settings:"wght" 600,"opsz" 96;white-space:nowrap;display:block;margin-bottom:28px}
 .foot-word span{display:inline-block;transition:font-variation-settings .5s var(--out),color .4s,transform .5s var(--pop)}
 .foot-word span:hover{font-variation-settings:"wght" 800,"opsz" 96;color:var(--rose);transform:translateY(-4%)}
-.foot-row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;color:var(--soft);font-size:15px}
+.foot-row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;color:var(--soft);font-size:.9375rem}
 .foot-row nav{display:flex;gap:22px;flex-wrap:wrap}
 .foot-row a:hover{color:var(--ink)}
 
 /* ---------- responsive ---------- */
 @media (max-width:980px){
-  .about,.skills,.cv-top,.contact{grid-template-columns:minmax(0,1fr)}
+  .about,.cv-top,.contact{grid-template-columns:minmax(0,1fr)}
   .groups{grid-template-columns:repeat(3,minmax(0,1fr))}
   .works{grid-template-columns:repeat(2,minmax(0,1fr))}
   .bg-cols{grid-template-columns:minmax(0,1fr)}
-  .tablist{display:flex;overflow-x:auto;scrollbar-width:none;gap:4px}
-  .tablist::-webkit-scrollbar{display:none}
-  .tab{white-space:nowrap;font-size:20px;padding:12px 18px}
-  .tab .pip{display:none}
-  .tab-blob{right:auto;bottom:0;top:0}
+  .sk-body{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .sk-col.wide{grid-column:1 / -1}
+  .dock{flex-wrap:wrap}
+  .dk{--ts:50px}
 }
 @media (max-width:720px){
-  body{font-size:16px}
+  body{font-size:1rem}
   .wrap{padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
   .brand{display:none}
-  .links a{padding:9px 13px;font-size:14px}
+  .links a{padding:9px 13px;font-size:.875rem}
+  .sk-body{grid-template-columns:minmax(0,1fr)}
+  .sk[data-from="r"]{--from:28px}
+  .sk[data-from="l"]{--from:-28px}
   .tool{left:var(--mx);top:var(--my)}
   .tool.desk{display:none}
   .tool .tile{--ts:50px}
@@ -383,23 +405,21 @@ main{overflow-x:clip;position:relative;z-index:1}
   .works{grid-template-columns:minmax(0,1fr)}
   .dk{--ts:46px}
   .dock{gap:10px;padding:12px}
-  .rc{--cw:170px}
-  .stage{height:440px}
+  .stage{--cw:210px}
+  .phone{width:250px}
+  .view[data-view="beranda"] .sec:not(:last-child)::after{width:calc(100% - 36px)}
   .cv-sec{grid-template-columns:minmax(0,1fr);gap:12px}
   .cv-row{flex-wrap:wrap}
   .scroll-cue{display:none}
-  .cur-dot,.cur-ring{display:none}
 }
 /* motion off (visitor's choice, footer button) */
 .calm *,.calm *::before,.calm *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 .calm .aurora i{animation:none}
-.motion-btn{height:40px;padding:0 16px;font-size:14px}
+.motion-btn{height:40px;padding:0 16px;font-size:.875rem}
 </style>
 
 <div class="aurora" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i><i class="bm" id="bm"></i></div>
 <div class="grain" aria-hidden="true"></div>
-<div class="cur-dot" id="curDot" aria-hidden="true"></div>
-<div class="cur-ring" id="curRing" aria-hidden="true"></div>
 
 <header class="nav-wrap">
   <nav class="nav glass" aria-label="Menu utama">
@@ -465,56 +485,76 @@ main{overflow-x:clip;position:relative;z-index:1}
   </section>
 
   <section class="sec" aria-labelledby="t-skills" style="padding-top:0">
-    <div class="wrap skills">
-      <div class="skills-left">
+    <div class="wrap">
+      <div class="sec-head">
         <h2 class="h2" id="t-skills" data-r>Keahlian</h2>
-        <p class="soft" data-r="1" style="max-width:36ch">Lima bidang kreatif, dengan sosial media dan konten sebagai yang utama.</p>
-        <div class="tablist" role="tablist" aria-label="Bidang keahlian" id="tablist" data-r="2">
-          <span class="tab-blob" id="tabBlob" aria-hidden="true"></span>
-          <button class="tab" role="tab" id="tab-sosmed" aria-controls="p-sosmed" aria-selected="true">Sosial Media &amp; Konten<span class="pip"></span></button>
-          <button class="tab" role="tab" id="tab-web" aria-controls="p-web" aria-selected="false" tabindex="-1">Desain Web<span class="pip"></span></button>
-          <button class="tab" role="tab" id="tab-visual" aria-controls="p-visual" aria-selected="false" tabindex="-1">Desain Visual<span class="pip"></span></button>
-          <button class="tab" role="tab" id="tab-motion" aria-controls="p-motion" aria-selected="false" tabindex="-1">Motion &amp; Video<span class="pip"></span></button>
-          <button class="tab" role="tab" id="tab-live" aria-controls="p-live" aria-selected="false" tabindex="-1">Siaran Langsung<span class="pip"></span></button>
-        </div>
+        <p data-r="1">Lima bidang kreatif, dengan sosial media dan konten sebagai yang utama.</p>
       </div>
-
-      <div data-r="2">
-        <div class="panel glass" role="tabpanel" id="p-sosmed" aria-labelledby="tab-sosmed">
-          <h3 class="h3">Sosial Media &amp; Konten</h3>
-          <p>Merencanakan, membuat, dan mengelola konten short-form yang ditonton banyak orang. Salah satu konten saya menembus 800 ribu views di TikTok.</p>
-          <ul class="chips"><li>Strategi konten</li><li>Naskah dan caption</li><li>Template konten</li><li>Editing short-form</li><li>TikTok</li><li>YouTube</li><li>Instagram</li></ul>
-          <div class="exp"><b>Pengalaman</b><span>Agensi tenaga kerja 世華, Taiwan: social media paruh waktu (2022 sampai 2025), lalu penuh waktu sejak Agustus 2026. Mengelola 5 akun media sosial perusahaan dengan 4 template konten. Akun sendiri: TikTok @zellios_7 dan YouTube @CECEH_TAIWAN.</span></div>
-          <div class="btns"><a class="btn btn-main mag" href="#karya" data-filter="sosmed"><span class="lab">Lihat karya</span></a><a class="btn btn-glass mag" href="#cv"><span class="lab">Unduh CV</span></a></div>
-        </div>
-        <div class="panel glass" role="tabpanel" id="p-web" aria-labelledby="tab-web" hidden>
-          <h3 class="h3">Desain Web</h3>
-          <p>Merancang dan membangun website yang terasa hidup, dari tata letak sampai animasi dan interaksi.</p>
-          <ul class="chips"><li>Desain UI</li><li>HTML dan CSS</li><li>Animasi interaktif</li><li>Website responsif</li><li>Dibangun bersama AI (Claude Code)</li></ul>
-          <div class="exp"><b>Pengalaman</b><span>Ditugaskan membangun website perusahaan di agensi Taiwan (menyusul). Website portofolio ini buatan saya.</span></div>
-          <div class="btns"><a class="btn btn-main mag" href="#karya" data-filter="web"><span class="lab">Lihat karya</span></a><a class="btn btn-glass mag" href="#cv"><span class="lab">Unduh CV</span></a></div>
-        </div>
-        <div class="panel glass" role="tabpanel" id="p-visual" aria-labelledby="tab-visual" hidden>
-          <h3 class="h3">Desain Visual</h3>
-          <p>Poster, banner, ilustrasi, LINE sticker, dan webtoon. Lulusan S1 Desain Komunikasi Visual.</p>
-          <ul class="chips"><li>Photoshop</li><li>Illustrator</li><li>InDesign</li><li>Canva</li><li>Clip Studio Paint</li><li>Procreate</li><li>Ilustrasi pesanan</li></ul>
-          <div class="exp"><b>Pengalaman</b><span>Ilustrator lepas sejak 2019: menerima pesanan gambar (commission) dari sekitar 30 klien.</span></div>
-          <div class="btns"><a class="btn btn-main mag" href="#karya" data-filter="visual"><span class="lab">Lihat karya</span></a><a class="btn btn-glass mag" href="#cv"><span class="lab">Unduh CV</span></a></div>
-        </div>
-        <div class="panel glass" role="tabpanel" id="p-motion" aria-labelledby="tab-motion" hidden>
-          <h3 class="h3">Motion &amp; Video</h3>
-          <p>Motion graphic gaya kreator dan alur kerja video otomatis berbasis AI, supaya konten jadi lebih cepat tanpa turun kualitas.</p>
-          <ul class="chips"><li>CapCut</li><li>Motion graphic</li><li>Editing video</li><li>Otomatisasi AI</li><li>Claude Code</li></ul>
-          <div class="exp"><b>Pengalaman</b><span>Membuat alat pembuat video otomatis untuk konten perusahaan: 25 sampai 30 video per bulan, sekitar 30 menit per video termasuk naskah.</span></div>
-          <div class="btns"><a class="btn btn-main mag" href="#karya" data-filter="motion"><span class="lab">Lihat karya</span></a><a class="btn btn-glass mag" href="#cv"><span class="lab">Unduh CV</span></a></div>
-        </div>
-        <div class="panel glass" role="tabpanel" id="p-live" aria-labelledby="tab-live" hidden>
-          <h3 class="h3">Siaran Langsung</h3>
-          <p>Tampil sebagai host siaran langsung yang membangun obrolan dengan penonton. Contoh rekamannya segera tayang di halaman Karya.</p>
-          <ul class="chips"><li>Tampil di depan kamera</li><li>Interaksi dengan penonton</li><li>Bahasa Indonesia dan Inggris</li></ul>
-          <div class="exp"><b>Pengalaman</b><span>Contoh rekaman siaran sedang disiapkan.</span></div>
-          <div class="btns"><a class="btn btn-main mag" href="#karya" data-filter="live"><span class="lab">Lihat karya</span></a><a class="btn btn-glass mag" href="#cv"><span class="lab">Unduh CV</span></a></div>
-        </div>
+      <!-- R1 + R2 (15 Nov): 1 bidang = 1 kartu. Tahun bertanda KARANGAN di REVISI-WEBSITE.txt bagian K wajib dibenerin sebelum tayang. -->
+      <div class="sk-list">
+        <article class="sk" data-from="r" data-r="1" aria-labelledby="sk-sosmed">
+          <div class="sk-top"><h3 class="h3" id="sk-sosmed">Sosial Media &amp; Konten</h3><p class="sk-yr"><b>4 tahun</b><span>sejak 2022</span></p></div>
+          <div class="sk-body">
+            <div class="sk-col"><h4>Jobdesk</h4><ul><li>Produksi dan edit konten short-form</li><li>Rencana dan jadwal konten</li><li>Naskah, caption, dan template konten</li></ul></div>
+            <div class="sk-col"><h4>Pencapaian</h4><ul><li>Konten tembus 800 ribu views di TikTok</li><li>Memegang 5 akun media sosial perusahaan</li><li>4 template konten untuk 4 akun</li></ul></div>
+            <div class="sk-col wide"><h4>Pengalaman</h4><dl class="tl"><dt>2022–2025</dt><dd>世華 (paruh waktu)</dd><dt>2026–sekarang</dt><dd>世華 (penuh waktu)</dd></dl>
+              <h4>Proyek pribadi</h4><dl class="tl"><dt>2024</dt><dd>TikTok @zellios_7</dd><dt>2025</dt><dd>YouTube @CECEH_TAIWAN</dd></dl></div>
+          </div>
+          <div class="sk-foot">
+            <div class="sk-tools"><h4>Alat</h4><ul class="chips"><li>CapCut</li><li>Canva</li><li>Photoshop</li><li>Figma</li><li>ChatGPT</li></ul></div>
+            <div class="btns"><a class="btn btn-main mag" href="#karya" data-filter="sosmed"><span class="lab">Lihat detail</span></a><a class="btn btn-glass mag" href="#cv"><span class="lab">Unduh CV</span></a></div>
+          </div>
+        </article>
+        <article class="sk" data-from="l" data-r="1" aria-labelledby="sk-web">
+          <div class="sk-top"><h3 class="h3" id="sk-web">Desain Web</h3><p class="sk-yr"><b>Baru mulai</b><span>sejak 2026</span></p></div>
+          <div class="sk-body">
+            <div class="sk-col"><h4>Jobdesk</h4><ul><li>Merancang tampilan website (UI)</li><li>Membangun website responsif</li><li>Animasi dan interaksi halaman</li></ul></div>
+            <div class="sk-col"><h4>Pencapaian</h4><ul><li>Website portofolio ini: desain, kode, dan animasi</li><li>Dipercaya kantor membangun website perusahaan</li></ul></div>
+            <div class="sk-col wide"><h4>Pengalaman</h4><dl class="tl"><dt>2026–sekarang</dt><dd>世華: website perusahaan (menyusul)</dd></dl>
+              <h4>Proyek pribadi</h4><dl class="tl"><dt>2026</dt><dd>Jee Porto (website ini)</dd></dl></div>
+          </div>
+          <div class="sk-foot">
+            <div class="sk-tools"><h4>Alat</h4><ul class="chips"><li>Figma</li><li>HTML dan CSS</li><li>Claude Code</li></ul></div>
+            <div class="btns"><a class="btn btn-main mag" href="#karya" data-filter="web"><span class="lab">Lihat detail</span></a><a class="btn btn-glass mag" href="#cv"><span class="lab">Unduh CV</span></a></div>
+          </div>
+        </article>
+        <article class="sk" data-from="r" data-r="1" aria-labelledby="sk-visual">
+          <div class="sk-top"><h3 class="h3" id="sk-visual">Desain Visual</h3><p class="sk-yr"><b>7 tahun</b><span>sejak 2019</span></p></div>
+          <div class="sk-body">
+            <div class="sk-col"><h4>Jobdesk</h4><ul><li>Poster, banner, dan aset konten</li><li>Ilustrasi pesanan (commission)</li><li>LINE sticker dan webtoon</li></ul></div>
+            <div class="sk-col"><h4>Pencapaian</h4><ul><li>Sekitar 30 klien ilustrasi sejak 2019</li><li>Lulusan S1 Desain Komunikasi Visual</li></ul></div>
+            <div class="sk-col wide"><h4>Pengalaman</h4><dl class="tl"><dt>2019–sekarang</dt><dd>Ilustrator lepas (commission)</dd><dt>2022–2025</dt><dd>世華: desain aset konten (paruh waktu)</dd></dl>
+              <h4>Proyek pribadi</h4><dl class="tl"><dt>2022</dt><dd>LINE sticker</dd><dt>2023</dt><dd>Webtoon “That Man Arcy”</dd></dl></div>
+          </div>
+          <div class="sk-foot">
+            <div class="sk-tools"><h4>Alat</h4><ul class="chips"><li>Photoshop</li><li>Illustrator</li><li>InDesign</li><li>Clip Studio Paint</li><li>Procreate</li></ul></div>
+            <div class="btns"><a class="btn btn-main mag" href="#karya" data-filter="visual"><span class="lab">Lihat detail</span></a><a class="btn btn-glass mag" href="#cv"><span class="lab">Unduh CV</span></a></div>
+          </div>
+        </article>
+        <article class="sk" data-from="l" data-r="1" aria-labelledby="sk-motion">
+          <div class="sk-top"><h3 class="h3" id="sk-motion">Motion &amp; Video</h3><p class="sk-yr"><b>4 tahun</b><span>sejak 2022</span></p></div>
+          <div class="sk-body">
+            <div class="sk-col"><h4>Jobdesk</h4><ul><li>Edit video short-form</li><li>Motion graphic gaya kreator</li><li>Alur kerja video otomatis berbasis AI</li></ul></div>
+            <div class="sk-col"><h4>Pencapaian</h4><ul><li>25–30 video per bulan</li><li>Sekitar 30 menit per video, termasuk naskah</li></ul></div>
+            <div class="sk-col wide"><h4>Pengalaman</h4><dl class="tl"><dt>2022–2025</dt><dd>世華: edit video konten (paruh waktu)</dd><dt>2026–sekarang</dt><dd>世華: alat video otomatis berbasis AI</dd></dl></div>
+          </div>
+          <div class="sk-foot">
+            <div class="sk-tools"><h4>Alat</h4><ul class="chips"><li>CapCut</li><li>After Effects</li><li>Remotion</li><li>Claude Code</li></ul></div>
+            <div class="btns"><a class="btn btn-main mag" href="#karya" data-filter="motion"><span class="lab">Lihat detail</span></a><a class="btn btn-glass mag" href="#cv"><span class="lab">Unduh CV</span></a></div>
+          </div>
+        </article>
+        <article class="sk" data-from="r" data-r="1" aria-labelledby="sk-live">
+          <div class="sk-top"><h3 class="h3" id="sk-live">Siaran Langsung</h3><p class="sk-yr"><b>1 tahun</b><span>sejak 2025</span></p></div>
+          <div class="sk-body">
+            <div class="sk-col"><h4>Jobdesk</h4><ul><li>Host siaran langsung</li><li>Membangun obrolan dengan penonton</li><li>Bahasa Indonesia dan Inggris</li></ul></div>
+            <div class="sk-col"><h4>Pencapaian</h4><ul><li>Contoh rekaman segera tayang</li></ul></div>
+            <div class="sk-col wide"><h4>Pengalaman</h4><p class="soft">Rincian menyusul.</p></div>
+          </div>
+          <div class="sk-foot">
+            <div class="sk-tools"><h4>Alat</h4><p class="soft">Menyusul</p></div>
+            <div class="btns"><a class="btn btn-main mag" href="#karya" data-filter="live"><span class="lab">Lihat detail</span></a><a class="btn btn-glass mag" href="#cv"><span class="lab">Unduh CV</span></a></div>
+          </div>
+        </article>
       </div>
     </div>
   </section>
@@ -527,11 +567,11 @@ main{overflow-x:clip;position:relative;z-index:1}
       </div>
       <div class="dock-zone" data-r="2"><ul class="dock glass" id="dock" aria-label="Daftar alat"></ul></div>
       <dl class="groups" data-r="3">
-        <div><dt>Desain</dt><dd>Photoshop, Illustrator, InDesign, Canva, Figma, SketchUp</dd></div>
-        <div><dt>Gambar</dt><dd>Clip Studio Paint, Procreate, Ibis Paint</dd></div>
-        <div><dt>Video</dt><dd>CapCut</dd></div>
+        <div><dt>Desain</dt><dd>Photoshop, Illustrator, InDesign, Canva, Figma</dd></div>
+        <div><dt>Gambar</dt><dd>Clip Studio Paint, Procreate, Ibis Paint, SketchUp</dd></div>
+        <div><dt>Video</dt><dd>CapCut, After Effects, Remotion, Claude Code</dd></div>
         <div><dt>Kantor</dt><dd>Excel, Microsoft Office, Notion</dd></div>
-        <div><dt>AI</dt><dd>Claude Code, ChatGPT</dd></div>
+        <div><dt>AI</dt><dd>Claude Code, ChatGPT, Codex, Gemini, Grok</dd></div>
       </dl>
     </div>
   </section>
@@ -647,7 +687,7 @@ main{overflow-x:clip;position:relative;z-index:1}
       <section class="cv-sec" data-r><h3>Sertifikat</h3><div class="c"><p>Fundamentals of Digital Marketing, Google (April 2026).<br>Create Scroll Stopping Content, Canva (April 2026).</p></div></section>
       <section class="cv-sec" data-r><h3>Proyek sosial</h3><div class="c"><p>TikTok @zellios_7: konten informasi hukum dan berita Taiwan untuk pekerja migran di Taiwan, termasuk proses PTTM dan pindah majikan.</p></div></section>
       <section class="cv-sec" data-r><h3>Keahlian</h3><div class="c"><p>Strategi dan produksi konten short-form, naskah dan caption, template konten, desain UI dan website, desain visual dan ilustrasi, motion graphic, editing video, otomatisasi berbasis AI, host siaran langsung.</p></div></section>
-      <section class="cv-sec" data-r><h3>Alat</h3><div class="c"><p>Adobe Photoshop, Illustrator, InDesign, Canva, Figma, SketchUp, Clip Studio Paint, Procreate, Ibis Paint, CapCut, Excel, Microsoft Office, Notion, Claude Code, ChatGPT.</p></div></section>
+      <section class="cv-sec" data-r><h3>Alat</h3><div class="c"><p>Adobe Photoshop, Illustrator, InDesign, Canva, Figma, SketchUp, Clip Studio Paint, Procreate, Ibis Paint, CapCut, After Effects, Remotion, Excel, Microsoft Office, Notion, Claude Code, ChatGPT, Codex, Gemini, Grok.</p></div></section>
       <section class="cv-sec" data-r><h3>Bahasa</h3><div class="c"><p>Indonesia (bahasa ibu). Inggris (lancar berbicara dan memahami percakapan). Mandarin (memahami percakapan, baca-tulis dasar).</p></div></section>
       <section class="cv-sec" data-r><h3>Kontak</h3><div class="c"><p>jennyferyang21@gmail.com<br>linkedin.com/in/jennyfer-yang<br>Taiwan</p></div></section>
     </article>
@@ -725,7 +765,6 @@ try { reduce = localStorage.getItem('jee-motion') === 'off'; } catch (_) {}
 if (reduce) root.classList.add('calm');
 const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
 const mqPhone = matchMedia('(max-width: 720px)');
-const mqTab = matchMedia('(max-width: 980px)');
 
 /* ---------- data ---------- */
 const CLAUDE = '<svg viewBox="0 0 24 24" aria-hidden="true"><g stroke="#D97757" stroke-width="2.8" stroke-linecap="round"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4"/></g></svg>';
@@ -740,11 +779,16 @@ const TOOLS = [
   {n:'Procreate', t:'Pc', bg:'#111111', fg:'#FFFFFF', x:91, y:30, mx:88, my:14, d:1.0, m:1},
   {n:'Ibis Paint', t:'iP', bg:'#FFFFFF', fg:'#E6007E', x:89, y:66, d:.7},
   {n:'CapCut', t:'CC', bg:'#000000', fg:'#FFFFFF', x:80, y:87, mx:86, my:88, d:1.1, m:1},
+  {n:'After Effects', t:'Ae', bg:'#00005B', fg:'#9999FF', dockOnly:1},
+  {n:'Remotion', t:'Rm', bg:'#0B84F3', fg:'#FFFFFF', dockOnly:1},
   {n:'Microsoft Excel', t:'X', bg:'#107C41', fg:'#FFFFFF', x:66, y:88, mx:62, my:93, d:.6, m:1},
   {n:'Microsoft Office', t:'O', bg:'#D83B01', fg:'#FFFFFF', x:37, y:18, d:.5},
   {n:'Notion', t:'N', bg:'#FFFFFF', fg:'#111111', x:63, y:19, d:.55},
   {n:'Claude Code', svg:CLAUDE, bg:'#262624', fg:'#D97757', x:94, y:48, mx:38, my:93, d:.9, m:1},
   {n:'ChatGPT', t:'GPT', bg:'#10A37F', fg:'#FFFFFF', sm:1, dockOnly:1},
+  {n:'Codex', t:'Cx', bg:'#000000', fg:'#FFFFFF', dockOnly:1},
+  {n:'Gemini', svg:'<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#8AB4F8" d="M12 2c.6 5.4 4.6 9.4 10 10-5.4.6-9.4 4.6-10 10-.6-5.4-4.6-9.4-10-10 5.4-.6 9.4-4.6 10-10z"/></svg>', bg:'#1B1C1D', fg:'#8AB4F8', dockOnly:1},
+  {n:'Grok', t:'Gk', bg:'#000000', fg:'#FFFFFF', dockOnly:1},
 ];
 const CATS = {sosmed:'Sosial Media & Konten', web:'Desain Web', visual:'Desain Visual', motion:'Motion & Video', live:'Siaran Langsung'};
 const ART = {
@@ -796,8 +840,6 @@ function liquid(blob, box, target, axis, animate = true) {
     blob.animate([fmt(from), Object.assign(fmt({pos: lo, size: hi - lo}), {offset: .45}), fmt(to)], {duration: 620, easing: 'cubic-bezier(.65,0,.35,1)'});
   }
   Object.assign(blob.style, fmt(to));
-  if (axis === 'x' && blob.id === 'tabBlob') { blob.style.top = (r.top - c.top) + 'px'; blob.style.height = r.height + 'px'; blob.style.right = 'auto'; }
-  if (axis === 'y' && blob.id === 'tabBlob') { blob.style.left = '0px'; blob.style.width = ''; blob.style.right = '0px'; }
   blob._s = to;
 }
 
@@ -834,6 +876,7 @@ TOOLS.forEach(t => {
   li.innerHTML = `<span class="tile${t.sm ? ' sm' : ''}" aria-hidden="true">${glyph(t)}</span><span class="tip" aria-hidden="true">${t.n}</span>`;
   dock.appendChild(li);
 });
+dock.style.setProperty('--n', TOOLS.length); /* jumlah alat, dipakai CSS supaya dock muat 1 baris */
 const dks = $$('.dk', dock);
 if (fine) {
   dock.addEventListener('pointermove', e => {
@@ -853,21 +896,42 @@ const ringWorks = WORKS.filter(w => !w.noRing);
 ring.innerHTML = ringWorks.map(w => `<a class="rc" href="#karya" draggable="false" data-filter="${w.cat}" style="--c:${w.c}" aria-label="${w.t}, ${CATS[w.cat]}"><div class="rc-in">${ART[w.art]}<div class="rc-cap"><strong>${w.t}</strong><span>${CATS[w.cat]}</span></div></div></a>`).join('');
 const cards = $$('.rc', ring);
 const N = cards.length, STEP = 360 / N;
-let R = 400, rot = 0, vel = 0, dragging = false, moved = 0, lastX = 0, lastT = 0, hoverRing = false, snap = null, suppress = false, pid = null;
+let SP = 300, DEG = .1, rot = 0, vel = 0, dragging = false, moved = 0, lastX = 0, lastT = 0, snap = null, suppress = false, pid = null;
+let overStage = false, hlMode = 'center', wheelT = 0;
 function layoutRing() {
   const w = cards[0].offsetWidth || 220;
-  R = Math.round((w / 2 + 22) / Math.tan(Math.PI / N));
-  cards.forEach((c, i) => { c.style.transform = `rotateY(${i * STEP}deg) translateZ(${R}px)`; });
+  SP = w * 1.18; /* jarak antar kartu: barisan lebar ke samping (R5), dengan celah kecil di antara kartu (R14, 15 Nov) */
+  DEG = STEP / SP; /* derajat putaran per piksel geser, supaya geseran jari = gerak kartu */
 }
-stage.addEventListener('pointerenter', () => { hoverRing = true; });
-stage.addEventListener('pointerleave', () => { hoverRing = false; });
+/* R14 (15 Nov): kartu tetap berjalan walau mouse di atasnya. Sorotan ikut kartu di bawah mouse. */
+stage.addEventListener('pointerenter', e => { overStage = e.pointerType === 'mouse'; });
+stage.addEventListener('pointerleave', () => { overStage = false; hlMode = 'center'; });
+stage.addEventListener('pointermove', e => { if (e.pointerType === 'mouse') { overStage = true; hlMode = 'hover'; } });
+/* R14: roda mouse di ATAS KARTU = geser kartu ke samping. Di luar kartu (celah, atas, bawah) = halaman turun seperti biasa. */
+stage.addEventListener('wheel', e => {
+  if (!e.target.closest('.rc')) return;
+  const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? innerHeight : 1;
+  const d = (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) * unit;
+  if (!d) return;
+  e.preventDefault();
+  hlMode = 'center'; vel = 0;
+  clearTimeout(wheelT);
+  if (e.deltaMode !== 0 || Math.abs(d) >= 50) {
+    /* roda mouse biasa: 1 putaran roda = pindah 1 kartu */
+    snap = Math.round((snap ?? rot) / STEP) * STEP - Math.sign(d) * STEP;
+  } else {
+    /* touchpad laptop: ikut gerakan jari, lalu kartu terdekat pas di tengah */
+    snap = (snap ?? rot) - d * DEG;
+    wheelT = setTimeout(() => { snap = Math.round((snap ?? rot) / STEP) * STEP; }, 160);
+  }
+}, {passive: false});
 stage.addEventListener('pointerdown', e => { dragging = true; moved = 0; lastX = e.clientX; lastT = performance.now(); vel = 0; snap = null; pid = e.pointerId; });
 stage.addEventListener('pointermove', e => {
   if (!dragging) return;
   const now = performance.now(), dx = e.clientX - lastX;
-  rot += dx * .24; moved += Math.abs(dx);
+  rot += dx * DEG; moved += Math.abs(dx);
   const dt = Math.max(1, now - lastT);
-  vel = vel * .6 + (dx * .24 / dt * 1000) * .4;
+  vel = vel * .6 + (dx * DEG / dt * 1000) * .4;
   lastX = e.clientX; lastT = now;
   if (moved > 6 && !stage.hasPointerCapture(pid)) { try { stage.setPointerCapture(pid); } catch (_) {} }
 });
@@ -885,42 +949,33 @@ $('#next').addEventListener('click', () => { snap = (snap ?? nearest()) - STEP; 
 function ringTick(dt) {
   if (!dragging) {
     if (snap !== null) { rot += (snap - rot) * Math.min(1, dt * 7); if (Math.abs(snap - rot) < .05) { rot = snap; snap = null; } }
-    else { rot += vel * dt; vel *= Math.pow(.05, dt); if (Math.abs(vel) < 4 && !hoverRing && !reduce) rot += -6 * dt; }
+    else {
+      rot += vel * dt; vel *= Math.pow(.05, dt);
+      const kbFocus = ring.contains(document.activeElement) && !hasMouse; /* pengguna keyboard: kartu yang difokus tidak lari */
+      if (Math.abs(vel) < 4 && !reduce && !kbFocus) rot += -6 * dt; /* tetap berjalan walau mouse di atas kartu (R14) */
+    }
   }
-  ring.style.transform = `translateZ(${-R}px) rotateX(-4deg) rotateY(${rot}deg)`;
+  /* kartu yang disorot: di bawah mouse (kalau mouse sedang bergerak di atas kartu), selain itu kartu tengah */
+  let hi = -1;
+  if (hlMode === 'hover' && overStage && !dragging) {
+    const el = document.elementFromPoint(mx, my), card = el && el.closest('.rc');
+    if (card) hi = cards.indexOf(card);
+  }
+  let best = 9, bestI = 0;
   cards.forEach((c, i) => {
-    const a = ((i * STEP + rot) % 360 + 540) % 360 - 180;
-    const cs = Math.cos(a * Math.PI / 180);
-    c.style.opacity = cs <= 0 ? 0 : (.18 + .82 * Math.pow(cs, 3)).toFixed(3);
-    c.style.pointerEvents = cs < .3 ? 'none' : '';
-    c.classList.toggle('front', Math.abs(a) < STEP / 2);
+    const a = ((i * STEP + rot) % 360 + 540) % 360 - 180; /* sudut -180..180 */
+    const off = a / STEP; /* posisi kartu: 0 = tengah, 1 = tetangga kanan, dst */
+    const ab = Math.abs(off);
+    const s = 1.06 - Math.min(ab, 3) * .1;
+    c.style.transform = `translate3d(${(off * SP).toFixed(1)}px,0,${(-Math.min(ab, 3) * 70).toFixed(1)}px) rotateY(${(-clamp(off, -3, 3) * 9).toFixed(2)}deg) scale(${s.toFixed(3)})`;
+    c.style.opacity = clamp(1 - Math.max(0, ab - 2.4) / 1.2, 0, 1).toFixed(3);
+    c.style.zIndex = 100 - Math.round(ab * 10);
+    c.style.pointerEvents = ab > 3 ? 'none' : '';
+    if (ab < best) { best = ab; bestI = i; }
   });
+  if (hi < 0) hi = bestI;
+  cards.forEach((c, i) => { c.classList.toggle('front', i === hi); if (i === hi) c.style.zIndex = 200; });
 }
-
-/* ---------- skills tabs ---------- */
-const tabs = $$('[role="tab"]'), panels = tabs.map(t => document.getElementById(t.getAttribute('aria-controls')));
-const tablist = $('#tablist'), tabBlob = $('#tabBlob');
-let tabIdx = 0;
-const tabAxis = () => mqTab.matches ? 'x' : 'y';
-function selectTab(i, focus) {
-  tabIdx = i;
-  tabs.forEach((t, j) => { t.setAttribute('aria-selected', String(i === j)); t.tabIndex = i === j ? 0 : -1; });
-  panels.forEach((p, j) => { p.hidden = j !== i; });
-  const p = panels[i]; p.classList.remove('swap'); void p.offsetWidth; p.classList.add('swap');
-  liquid(tabBlob, tablist, tabs[i], tabAxis());
-  if (focus) tabs[i].focus();
-  if (mqTab.matches) tabs[i].scrollIntoView({block: 'nearest', inline: 'nearest', behavior: reduce ? 'auto' : 'smooth'});
-}
-tabs.forEach((t, i) => {
-  t.addEventListener('click', () => selectTab(i));
-  t.addEventListener('keydown', e => {
-    const k = e.key; let n = null;
-    if (k === 'ArrowDown' || k === 'ArrowRight') n = (i + 1) % tabs.length;
-    if (k === 'ArrowUp' || k === 'ArrowLeft') n = (i - 1 + tabs.length) % tabs.length;
-    if (k === 'Home') n = 0; if (k === 'End') n = tabs.length - 1;
-    if (n !== null) { e.preventDefault(); selectTab(n, true); }
-  });
-});
 
 /* ---------- works (Karya page) ---------- */
 const filtersEl = $('#filters'), fBlob = $('#fBlob'), worksEl = $('#works'), moreBtn = $('#worksMore');
@@ -1019,7 +1074,7 @@ function show(v, first) {
   const sec = viewEls.find(s => s.dataset.view === v);
   if (!first && !reduce) { sec.classList.remove('enter'); void sec.offsetWidth; sec.classList.add('enter'); }
   prepReveal(sec);
-  if (v === 'beranda') { layoutRing(); liquid(tabBlob, tablist, tabs[tabIdx], tabAxis(), false); if (current !== null && current !== 'beranda') heroStart = performance.now(); }
+  if (v === 'beranda') { layoutRing(); if (current !== null && current !== 'beranda') heroStart = performance.now(); }
   if (v === 'karya') { setFilter(pendingFilter || (current === 'karya' ? filter : 'all'), !first); pendingFilter = null; }
   if (!first) { const h = sec.querySelector('h1'); if (h) { h.setAttribute('tabindex', '-1'); h.focus({preventScroll: true}); } }
   current = v;
@@ -1027,26 +1082,17 @@ function show(v, first) {
 const route = first => { const h = location.hash.slice(1); show(VIEWS.includes(h) ? h : 'beranda', first); };
 addEventListener('hashchange', () => route(false));
 
-/* ---------- pointer, cursor, magnets ---------- */
+/* ---------- pointer + magnets ---------- */
+/* Kursor: gambar tangan kucing lewat CSS (--paw), digambar langsung oleh sistem jadi tanpa delay (R11, 15 Nov).
+   Kursor bulat lama yang membuntuti mouse sudah dihapus karena terasa ngelag. */
 let mx = innerWidth / 2, my = innerHeight * .4, sx = 0, sy = 0, hasMouse = false;
-const dot = $('#curDot'), ringC = $('#curRing'), bm = $('#bm');
-let rx = mx, ry = my, bx = mx, by = my;
+const bm = $('#bm');
+let bx = mx, by = my;
 addEventListener('pointermove', e => {
   if (e.pointerType !== 'mouse') return;
   mx = e.clientX; my = e.clientY;
-  if (!hasMouse && fine) { hasMouse = true; root.classList.add('cur-on', 'has-cursor'); rx = mx; ry = my; }
+  if (!hasMouse && fine) hasMouse = true;
 }, {passive: true});
-document.addEventListener('pointerleave', () => root.classList.remove('cur-on'));
-document.addEventListener('pointerenter', () => { if (hasMouse) root.classList.add('cur-on'); });
-addEventListener('pointerdown', () => ringC.classList.add('down'));
-addEventListener('pointerup', () => ringC.classList.remove('down'));
-document.addEventListener('pointerover', e => {
-  const lbl = e.target.closest('[data-cursor]');
-  const hov = e.target.closest('a, button, [role="tab"], .tool, .dk');
-  if (lbl && !e.target.closest('.ring-ctrl')) { ringC.className = 'cur-ring lbl'; ringC.textContent = lbl.dataset.cursor; }
-  else if (hov) { ringC.className = 'cur-ring hov'; ringC.textContent = ''; }
-  else { ringC.className = 'cur-ring'; ringC.textContent = ''; }
-});
 
 const mags = $$('.mag');
 const magActive = new Set();
@@ -1074,11 +1120,6 @@ function tick(now) {
   sx += ((mx / innerWidth) * 2 - 1 - sx) * .06;
   sy += ((my / innerHeight) * 2 - 1 - sy) * .06;
 
-  if (hasMouse) {
-    rx += (mx - rx) * .2; ry += (my - ry) * .2;
-    dot.style.transform = `translate3d(${mx}px,${my}px,0)`;
-    ringC.style.transform = `translate3d(${rx}px,${ry}px,0)`;
-  }
   if (!reduce) { bx += (mx - bx) * .04; by += (my - by) * .04; bm.style.transform = `translate3d(${bx}px,${by}px,0)`; }
 
   magActive.forEach(el => {
@@ -1146,7 +1187,6 @@ const relayout = () => {
   layoutRing();
   cacheChars();
   navBlob._s = null; liquid(navBlob, linksBox, navLinks.find(a => a.getAttribute('aria-current') === 'page'), 'x', false);
-  tabBlob._s = null; tabBlob.removeAttribute('style'); if (current === 'beranda') liquid(tabBlob, tablist, tabs[tabIdx], tabAxis(), false);
   fBlob._s = null; if (current === 'karya') liquid(fBlob, filtersEl, chips.find(c => c.dataset.k === filter), 'x', false);
 };
 addEventListener('resize', () => { clearTimeout(relayout._t); relayout._t = setTimeout(relayout, 120); });
