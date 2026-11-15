@@ -207,7 +207,7 @@ main{overflow-x:clip;position:relative;z-index:1}
 
 /* ---------- 3D ring of vertical cards ---------- */
 /* lebar kartu juga ikut tinggi layar, supaya di laptop pendek masih ada ruang di atas-bawah kartu untuk scroll ke bawah (R14) */
-.stage{--cw:clamp(220px,min(22vw,(100svh - 180px) * .5625),400px);position:relative;height:calc(var(--cw) * 16 / 9 + 120px);perspective:1800px;overflow:hidden;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.stage{--cw:clamp(220px,min(22vw,(100svh - 180px) * .5625),400px);position:relative;height:calc(var(--cw) * 16 / 9 + 120px);perspective:1800px;overflow:hidden;touch-action:pan-y;user-select:none;-webkit-user-select:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent)}
 .ring{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d}
 .rc{position:absolute;width:var(--cw);height:calc(var(--cw) * 16 / 9);left:calc(var(--cw) / -2);top:calc(var(--cw) * -8 / 9);backface-visibility:hidden;-webkit-backface-visibility:hidden;-webkit-user-drag:none;display:block}
 .rc-in{height:100%;border-radius:24px;overflow:hidden;background:var(--c);display:flex;flex-direction:column;transition:transform .6s var(--out),box-shadow .6s var(--out)}
@@ -581,8 +581,10 @@ main{overflow-x:clip;position:relative;z-index:1}
       <h2 class="h2" id="t-feat" data-r>Karya unggulan</h2>
       <p data-r="1">Karya dikurasi ulang dan tayang bertahap. Pilih kartu untuk membuka bidangnya di halaman Karya.</p>
     </div>
+    <div class="wrap"><!-- bingkai sama lebar dengan teks (16 Nov): sisi kiri-kanan kosong = tempat mouse untuk scroll halaman -->
     <div class="stage" id="stage" data-cursor="Geser" data-r="2">
       <div class="ring" id="ring"></div>
+    </div>
     </div>
     <div class="ring-ctrl wrap">
       <button class="icon-btn btn-glass mag" id="prev" aria-label="Kartu sebelumnya"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
@@ -897,7 +899,7 @@ ring.innerHTML = ringWorks.map(w => `<a class="rc" href="#karya" draggable="fals
 const cards = $$('.rc', ring);
 const N = cards.length, STEP = 360 / N;
 let SP = 300, DEG = .1, rot = 0, vel = 0, dragging = false, moved = 0, lastX = 0, lastT = 0, snap = null, suppress = false, pid = null;
-let overStage = false, hlMode = 'center', wheelT = 0;
+let overStage = false, hlMode = 'center', wheelAcc = 0, wheelLast = 0, wheelLock = 0;
 function layoutRing() {
   const w = cards[0].offsetWidth || 220;
   SP = w * 1.18; /* jarak antar kartu: barisan lebar ke samping (R5), dengan celah kecil di antara kartu (R14, 15 Nov) */
@@ -915,14 +917,18 @@ stage.addEventListener('wheel', e => {
   if (!d) return;
   e.preventDefault();
   hlMode = 'center'; vel = 0;
-  clearTimeout(wheelT);
-  if (e.deltaMode !== 0 || Math.abs(d) >= 50) {
-    /* roda mouse biasa: 1 putaran roda = pindah 1 kartu */
-    snap = Math.round((snap ?? rot) / STEP) * STEP - Math.sign(d) * STEP;
-  } else {
-    /* touchpad laptop: ikut gerakan jari, lalu kartu terdekat pas di tengah */
-    snap = (snap ?? rot) - d * DEG;
-    wheelT = setTimeout(() => { snap = Math.round((snap ?? rot) / STEP) * STEP; }, 160);
+  /* 16 Nov: lebih ringan. Gerakan kecil pertama dari roda mouse (smooth scroll Chrome) dulu dianggap touchpad dan
+     balik lagi, jadi harus scroll 2 kali. Sekarang gerakan kecil ke arah yang sama dijumlah; begitu ≥ 20 = pindah 1 kartu.
+     Setelah pindah, ada jeda singkat supaya 1 putaran roda tidak melompat banyak kartu. */
+  const now = performance.now();
+  if (now - wheelLast > 250) wheelAcc = 0;
+  wheelLast = now;
+  if (now < wheelLock) return;
+  if (Math.sign(d) !== Math.sign(wheelAcc)) wheelAcc = 0;
+  wheelAcc += d;
+  if (Math.abs(wheelAcc) >= 20) {
+    snap = (snap ?? Math.round(rot / STEP) * STEP) - Math.sign(wheelAcc) * STEP;
+    wheelAcc = 0; wheelLock = now + 220;
   }
 }, {passive: false});
 stage.addEventListener('pointerdown', e => { dragging = true; moved = 0; lastX = e.clientX; lastT = performance.now(); vel = 0; snap = null; pid = e.pointerId; });
@@ -1088,6 +1094,7 @@ addEventListener('hashchange', () => route(false));
 let mx = innerWidth / 2, my = innerHeight * .4, sx = 0, sy = 0, hasMouse = false;
 const bm = $('#bm');
 let bx = mx, by = my;
+
 addEventListener('pointermove', e => {
   if (e.pointerType !== 'mouse') return;
   mx = e.clientX; my = e.clientY;
