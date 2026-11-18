@@ -20,6 +20,12 @@
   --glass2:rgba(237,232,225,.08);
   --edge:rgba(237,232,225,.13);
   --rose:#EDE8E1;
+  /* aksen EMAS champagne (Jenny ACC 19 Nov malam, menggantikan merah): glamor + berkelas, untuk tombol utama atas,
+     garis tipis, titik, nomor bingkai, angka tahun */
+  --accent:#C9A96A;
+  --accent-hi:#F3DDA8;
+  /* tombol utama MERAH tua (Jenny 19 Nov: "semua tombol tetap merah") */
+  --red:#B23A2A;
   --rose-ink:#181614;
   --sky:#A8A198;
   --blue:#6F6A63;
@@ -506,12 +512,46 @@ html,body{background:var(--bg)}
 .js [data-r].pre{opacity:0;translate:0 14px;filter:blur(4px)}
 .js [data-r].in{filter:blur(0);transition:opacity .6s var(--out),translate .6s var(--out),filter .6s var(--out);transition-delay:var(--rd,0ms)}
 .js .sk[data-r].in{transition:opacity .6s var(--out),translate .6s var(--out),filter .6s var(--out)}
+/* aksen lampu kamar gelap + nomor bingkai ala roll film (19 Nov) */
+.btn-main{background:var(--red);color:var(--ink)}
+.btn-main:hover{background:#C4472F}
+.hero .btn-main:hover{box-shadow:0 0 0 4px rgba(178,58,42,.22),0 16px 40px -14px rgba(178,58,42,.6)}
+.brand .dot{background:var(--accent)}
+.fnum{display:flex;align-items:center;gap:6px;font-size:.8125rem;line-height:1.4;color:var(--soft);font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.fnum::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);flex:none}
+.rc-cap .fnum{margin-bottom:4px}
 /* rasi bintang Aquarius di footer */
 .foot .wrap{position:relative}
 .aqr{position:absolute;right:max(var(--gut),0px);top:-8px;width:150px;height:auto;opacity:.32;pointer-events:none}
 .aqr path{fill:none;stroke:var(--soft);stroke-width:.8}
 .aqr circle{fill:var(--ink)}
 @media (max-width:720px){.aqr{width:110px;top:-24px}}
+/* ================= GENANGAN MALAM (Jenny ACC 19 Nov malam, REVISI R25) =================
+   Jalan basah di malam hari: permukaan air gelap, riak saat mouse bergerak/diklik, pantulan lampu kota, aksen emas. */
+body{background:radial-gradient(ellipse 34% 75% at 0% 62%,rgba(214,150,70,.27),rgba(214,150,70,0) 72%) fixed,radial-gradient(ellipse 34% 75% at 100% 62%,rgba(214,150,70,.27),rgba(214,150,70,0) 72%) fixed,linear-gradient(180deg,#181614 0%,#16161A 55%,#0F1217 100%) fixed}
+.pool{position:fixed;inset:0;z-index:0;pointer-events:none;width:100%;height:100%}
+::selection{background:var(--accent);color:var(--bg)}
+:focus-visible{outline-color:var(--accent)}
+/* garis pemisah emas tipis + titik emas */
+.view[data-view="beranda"] .sec:not(:last-child)::after{background:linear-gradient(90deg,rgba(201,169,106,0),rgba(201,169,106,.45) 15%,rgba(201,169,106,.45) 85%,rgba(201,169,106,0))}
+.view[data-view="beranda"] .sec:not(:last-child)::before{background:var(--accent);box-shadow:0 0 0 6px #171617,0 0 14px rgba(201,169,106,.55)}
+.sk-col li::before{background:var(--accent);opacity:.8}
+.sk-yr b{color:var(--accent)}
+.sk-yr{border-color:rgba(201,169,106,.3)}
+.sk,.cv-list,.mail,.side,.cta{background:rgba(26,24,22,.82)}
+.sk-top{border-bottom-color:rgba(201,169,106,.18)}
+.bg-col::before,.bg-col:nth-child(2)::before,.bg-col:nth-child(3)::before{background:var(--accent)}
+.howto li::marker{color:var(--accent)}
+.aqr circle{fill:var(--accent-hi)}
+.aqr{opacity:.55}
+.aqr path{stroke:var(--accent)}
+.sk-cv:hover{text-decoration-color:var(--accent)}
+/* nama besar: pantulan di "air" + kilau emas menyapu huruf satu kali saat halaman dibuka */
+.name{-webkit-box-reflect:below -.12em linear-gradient(transparent 52%,rgba(255,255,255,.16))}
+.js .name .ch{animation:rise 1s var(--out) both,glint 1.1s var(--io) both;animation-delay:calc(var(--i) * 40ms + 150ms),calc(var(--i) * 60ms + 1250ms)}
+@keyframes glint{0%,100%{color:var(--ink);text-shadow:none}45%{color:var(--accent-hi);text-shadow:0 0 22px rgba(243,221,168,.5)}}
+/* isi muncul seperti naik dari permukaan air */
+.js [data-r].pre{translate:0 22px}
 /* motion off (visitor's choice, footer button) */
 .calm *,.calm *::before,.calm *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 .calm .aurora i{animation:none}
@@ -520,6 +560,7 @@ html,body{background:var(--bg)}
 
 <div class="aurora" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i><i class="bm" id="bm"></i></div>
 <div class="grain" aria-hidden="true"></div>
+<canvas class="pool" id="pool" aria-hidden="true"></canvas>
 
 <header class="nav-wrap">
   <nav class="nav glass" aria-label="Menu utama">
@@ -1042,7 +1083,8 @@ fw.innerHTML = [...fw.textContent].map(ch => ch === ' ' ? ' ' : '<span>' + ch + 
 /* ---------- ring of vertical cards ---------- */
 const ring = $('#ring'), stage = $('#stage');
 const ringWorks = WORKS.filter(w => !w.noRing);
-ring.innerHTML = ringWorks.map(w => `<a class="rc" href="#karya" draggable="false" data-filter="${w.cat}" style="--c:${w.c}" aria-label="${w.t}, ${CATS[w.cat]}"><div class="rc-in">${ART[w.art]}<div class="rc-cap"><strong>${w.t}</strong><span>${CATS[w.cat]}</span></div></div></a>`).join('');
+const fno = w => 'JEE ' + String(WORKS.indexOf(w) + 1).padStart(2, '0'); /* nomor bingkai ala roll film */
+ring.innerHTML = ringWorks.map(w => `<a class="rc" href="#karya" draggable="false" data-filter="${w.cat}" style="--c:${w.c}" aria-label="${w.t}, ${CATS[w.cat]}"><div class="rc-in">${ART[w.art]}<div class="rc-cap"><span class="fnum">${fno(w)}</span><strong>${w.t}</strong><span>${CATS[w.cat]}</span></div></div></a>`).join('');
 const cards = $$('.rc', ring);
 const N = cards.length, STEP = 360 / N;
 let SP = 300, DEG = .1, rot = 0, vel = 0, dragging = false, moved = 0, lastX = 0, lastT = 0, snap = null, suppress = false, pid = null;
@@ -1140,7 +1182,7 @@ const LIMIT = 6;
 function renderWorks(anim) {
   const list = WORKS.filter(w => filter === 'all' || w.cat === filter);
   const shown = (filter === 'all' && !showAll) ? list.slice(0, LIMIT) : list;
-  worksEl.innerHTML = shown.map((w, i) => `<article class="work${anim ? ' pop' : ''}" style="--rd:${i * 70}ms"><div class="frame" style="--c:${w.c}">${ART[w.art]}</div><div class="w-meta"><h3>${w.t}</h3><p>${w.d}</p><div class="w-foot"><span class="tag${w.status ? '' : ' soon'}">${w.status || 'Segera tayang'}</span><span class="tag">${CATS[w.cat]}</span>${w.link ? `<a class="w-link" href="${w.link[0]}" target="_blank" rel="noopener">${w.link[1]}${ARROW}</a>` : ''}</div></div></article>`).join('');
+  worksEl.innerHTML = shown.map((w, i) => `<article class="work${anim ? ' pop' : ''}" style="--rd:${i * 70}ms"><div class="frame" style="--c:${w.c}">${ART[w.art]}</div><div class="w-meta"><span class="fnum">${fno(w)}</span><h3>${w.t}</h3><p>${w.d}</p><div class="w-foot"><span class="tag${w.status ? '' : ' soon'}">${w.status || 'Segera tayang'}</span><span class="tag">${CATS[w.cat]}</span>${w.link ? `<a class="w-link" href="${w.link[0]}" target="_blank" rel="noopener">${w.link[1]}${ARROW}</a>` : ''}</div></div></article>`).join('');
   const hiddenCount = list.length - shown.length;
   moreBtn.parentElement.hidden = !(filter === 'all' && list.length > LIMIT);
   moreBtn.querySelector('.lab').textContent = showAll ? 'Tampilkan lebih sedikit' : `Tampilkan semua (${list.length})`;
@@ -1360,6 +1402,76 @@ motionBtn.addEventListener('click', () => {
   if (reduce) { $$('[data-r].pre').forEach(el => { el.classList.remove('pre'); el.classList.add('in'); }); phone.style.transform = ''; }
   syncMotionBtn();
 });
+
+/* ---------- LAUT SENJA REALISTIK (WebGL, 19 Nov, Jenny: "mau yang realistik kayak igloo") ----------
+   Laut digambar kartu grafis: ombak bergerak, pantulan matahari senja emas di sisi kiri dan kanan, tengah gelap.
+   Hemat: digambar di setengah resolusi, berhenti saat tab tidak dilihat, diam kalau "Matikan animasi".
+   Kalau browser tidak mendukung WebGL: latar cahaya senja CSS tetap tampil. */
+(() => {
+  const cv = $('#pool'); if (!cv) return;
+  const gl = cv.getContext('webgl', {antialias: false, alpha: false, powerPreference: 'low-power'});
+  if (!gl) { cv.remove(); return; }
+  const VS = 'attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
+  const FS = `precision highp float;
+uniform vec2 R;uniform float T;
+float hash(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
+float noise(vec2 p){vec2 i=floor(p),f=fract(p);vec2 u=f*f*(3.-2.*f);
+ return mix(mix(hash(i),hash(i+vec2(1.,0.)),u.x),mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),u.x),u.y);}
+float waves(vec2 p){float h=0.,a=.5;mat2 m=mat2(1.6,1.2,-1.2,1.6);
+ for(int i=0;i<5;i++){h+=a*noise(p+vec2(T*.32*(1.+float(i)*.35),T*.18));p=m*p;a*=.5;}return h;}
+void main(){
+ vec2 uv=(gl_FragCoord.xy-.5*R)/R.y;
+ float ax=abs(uv.x)/(.5*R.x/R.y);
+ float side=smoothstep(.12,.95,ax);
+ float hor=.16;
+ vec3 sun=vec3(1.,.66,.30);
+ vec3 col;
+ if(uv.y>hor){
+  float g=exp(-(uv.y-hor)*5.);
+  col=vec3(.085,.077,.072)+sun*(.10*g+.05*g*g)*side;
+ } else {
+  float d=hor-uv.y;
+  float z=.32/max(d,.0015);
+  vec2 p=vec2(uv.x*z*1.4,z*2.2);
+  float e=.03,h=waves(p);
+  float hx=waves(p+vec2(e,0.)),hz=waves(p+vec2(0.,e));
+  float k=.22+d*1.6;
+  vec3 n=normalize(vec3(-(hx-h)/e*k,1.,-(hz-h)/e*k));
+  vec3 rd=normalize(vec3(uv.x,uv.y-hor,1.1));
+  vec3 rf=reflect(rd,n);
+  vec3 L=normalize(vec3(sign(uv.x)*.75,.06,1.));
+  float s=max(dot(rf,L),0.);
+  float spec=pow(s,240.)*4.+pow(s,30.)*.22;
+  float fres=pow(1.-max(dot(-rd,n),0.),4.);
+  vec3 water=vec3(.035,.042,.05)+vec3(.20,.13,.07)*fres*side;
+  col=water+sun*spec*side*side+sun*.12*exp(-d*7.)*side;
+  col=mix(col,vec3(.03,.032,.038),smoothstep(.05,.7,d)*.35);
+ }
+ col*=mix(.22,1.,side);
+ gl_FragColor=vec4(col,1.);
+}`;
+  const sh = (t, src) => { const o = gl.createShader(t); gl.shaderSource(o, src); gl.compileShader(o); return o; };
+  const pr = gl.createProgram();
+  gl.attachShader(pr, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(pr);
+  if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) { cv.remove(); return; }
+  gl.useProgram(pr);
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(pr, 'a'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  const uR = gl.getUniformLocation(pr, 'R'), uT = gl.getUniformLocation(pr, 'T');
+  const SCALE = .5;
+  const fit = () => { cv.width = Math.round(innerWidth * SCALE); cv.height = Math.round(innerHeight * SCALE); gl.viewport(0, 0, cv.width, cv.height); gl.uniform2f(uR, cv.width, cv.height); };
+  fit(); addEventListener('resize', fit);
+  let t0 = performance.now(), frozen = 8;
+  function sea(now) {
+    requestAnimationFrame(sea);
+    if (document.hidden) return;
+    if (reduce) { gl.uniform1f(uT, frozen); gl.drawArrays(gl.TRIANGLES, 0, 3); return; }
+    frozen = (now - t0) / 1000 + 8;
+    gl.uniform1f(uT, frozen); gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
+  requestAnimationFrame(sea);
+})();
 
 /* ---------- start ---------- */
 route(true);
