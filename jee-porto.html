@@ -552,6 +552,17 @@ body{background:radial-gradient(ellipse 34% 75% at 0% 62%,rgba(214,150,70,.27),r
 @keyframes glint{0%,100%{color:var(--ink);text-shadow:none}45%{color:var(--accent-hi);text-shadow:0 0 22px rgba(243,221,168,.5)}}
 /* isi muncul seperti naik dari permukaan air */
 .js [data-r].pre{translate:0 22px}
+/* R26 (20 Nov, Jenny ACC): tulisan tidak bentrok dengan kilau laut.
+   Kabut gelap tipis di jalur isi tengah (kilau emas tetap utuh di tepi kiri-kanan) + ikon melayang berlatar pekat. */
+.haze{position:fixed;inset:0;z-index:0;pointer-events:none;background:linear-gradient(90deg,rgba(16,15,14,0) calc(50% - 780px),rgba(16,15,14,.62) calc(50% - 560px),rgba(16,15,14,.62) calc(50% + 560px),rgba(16,15,14,0) calc(50% + 780px))}
+.tool:not(:hover) .tile{background:rgba(22,20,18,.9);box-shadow:inset 0 0 0 1px rgba(237,232,225,.22),0 6px 18px -6px rgba(0,0,0,.7)}
+.hero,.sec-head,.lead,.groups,.bg-cols,.rows{text-shadow:0 1px 14px rgba(10,9,8,.7)}
+/* R22 jam Taiwan (jalan tengah): zona waktu besar, jam ukuran sedang */
+.side dd.tz{font-family:var(--display);font-size:var(--fs-h2);font-weight:500;line-height:1.1;letter-spacing:-.01em;margin-top:6px}
+.side dd.clock{font-size:var(--fs-h3);margin-top:8px}
+/* R23 nomor 9: 10 alat utama ditonjolkan, sisanya tetap ada tapi lebih redup */
+.groups dd{color:var(--soft)}
+.groups dd b{color:var(--ink);font-weight:600}
 /* motion off (visitor's choice, footer button) */
 .calm *,.calm *::before,.calm *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 .calm .aurora i{animation:none}
@@ -561,6 +572,7 @@ body{background:radial-gradient(ellipse 34% 75% at 0% 62%,rgba(214,150,70,.27),r
 <div class="aurora" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i><i class="bm" id="bm"></i></div>
 <div class="grain" aria-hidden="true"></div>
 <canvas class="pool" id="pool" aria-hidden="true"></canvas>
+<div class="haze" aria-hidden="true"></div>
 
 <header class="nav-wrap">
   <nav class="nav glass" aria-label="Menu utama">
@@ -584,7 +596,7 @@ body{background:radial-gradient(ellipse 34% 75% at 0% 62%,rgba(214,150,70,.27),r
     <div class="orbit" id="orbit" aria-hidden="true"></div>
     <div class="hero-in wrap">
       <h1 class="name" id="name">Jennyfer Yang</h1>
-      <p class="lead fade">Portofolio kreator konten, desain, dan motion graphic. Berbasis di Taiwan, terbuka untuk kerja remote dan proyek klien.</p>
+      <p class="lead fade">Video pendek, desain, dan motion graphic untuk media sosial. Dari Taiwan, siap kerja remote.</p>
       <div class="btns fade f2" style="justify-content:center">
         <a class="btn btn-main mag" href="#kontak"><span class="lab">Hubungi saya</span></a>
         <a class="btn btn-glass mag" href="#cv"><span class="lab">Unduh CV
@@ -599,7 +611,7 @@ body{background:radial-gradient(ellipse 34% 75% at 0% 62%,rgba(214,150,70,.27),r
       <div class="about-text">
         <h2 class="h2" id="t-about" data-r>Tentang saya</h2>
         <p class="statement" data-r="1">Saya membuat video pendek dan desain untuk media sosial, lengkap dengan naskahnya. Salah satu konten saya ditonton 800 ribu kali di TikTok.</p>
-        <p class="body" data-r="2">Saya cepat belajar teknologi baru dan membangun alur kerja otomatis berbasis AI untuk membuat video dan mengelola konten.</p>
+        <p class="body" data-r="2">Saya membangun alur kerja otomatis berbasis AI yang menghasilkan 25–30 video per bulan untuk akun media sosial perusahaan.</p>
         <dl class="facts" data-r="3">
           <div><dt>Berbasis di</dt><dd>Taiwan</dd></div>
           <div><dt>Bahasa</dt><dd>Indonesia, Inggris, Mandarin (memahami)</dd></div>
@@ -707,11 +719,11 @@ body{background:radial-gradient(ellipse 34% 75% at 0% 62%,rgba(214,150,70,.27),r
       </div>
       <div class="dock-zone" data-r="2"><ul class="dock glass" id="dock" aria-label="Daftar alat"></ul></div>
       <dl class="groups" data-r="3">
-        <div><dt>Desain</dt><dd>Photoshop, Illustrator, InDesign, Canva, Figma</dd></div>
-        <div><dt>Gambar</dt><dd>Clip Studio Paint, Procreate, Ibis Paint, SketchUp</dd></div>
-        <div><dt>Video</dt><dd>CapCut, After Effects, Remotion, Claude Code</dd></div>
-        <div><dt>Kantor</dt><dd>Excel, Microsoft Office, Notion</dd></div>
-        <div><dt>AI</dt><dd>Claude Code, ChatGPT, Codex, Gemini, Grok</dd></div>
+        <div><dt>Desain</dt><dd><b>Photoshop</b>, <b>Illustrator</b>, InDesign, <b>Canva</b>, Figma</dd></div>
+        <div><dt>Gambar</dt><dd><b>Clip Studio Paint</b>, <b>Procreate</b>, Ibis Paint, SketchUp</dd></div>
+        <div><dt>Video</dt><dd><b>CapCut</b>, After Effects, <b>Remotion</b>, Claude Code</dd></div>
+        <div><dt>Kantor</dt><dd><b>Excel</b>, Microsoft Office, Notion</dd></div>
+        <div><dt>AI</dt><dd><b>Claude Code</b>, <b>ChatGPT</b>, Codex, Gemini, Grok</dd></div>
       </dl>
     </div>
   </section>
@@ -756,8 +768,8 @@ body{background:radial-gradient(ellipse 34% 75% at 0% 62%,rgba(214,150,70,.27),r
         <div class="bg-col" data-r="3">
           <h3 class="h3">Cara kerja</h3>
           <ul>
-            <li>Cepat belajar alat dan teknologi baru.</li>
-            <li>Nyaman bekerja dalam tim.</li>
+            <li>Mengelola 5 akun media sosial perusahaan sekaligus.</li>
+            <li>Menghasilkan 25–30 video per bulan, sekitar 30 menit per video termasuk naskah.</li>
             <li>Membangun alur kerja otomatis dengan AI.</li>
           </ul>
         </div>
@@ -809,7 +821,7 @@ body{background:radial-gradient(ellipse 34% 75% at 0% 62%,rgba(214,150,70,.27),r
   <section class="sec wrap" aria-labelledby="t-cvtext">
     <h2 class="h2" id="t-cvtext" data-r>CV dalam teks</h2>
     <article class="cv-doc" aria-label="Isi CV">
-      <section class="cv-sec" data-r><h3>Ringkasan</h3><div class="c"><p>Membuat video pendek dan desain untuk media sosial, lengkap dengan naskahnya. Salah satu konten saya ditonton 800 ribu kali di TikTok. Cepat belajar teknologi baru dan membangun alur kerja otomatis berbasis AI. Berbasis di Taiwan, terbuka untuk kerja remote dan proyek klien.</p></div></section>
+      <section class="cv-sec" data-r><h3>Ringkasan</h3><div class="c"><p>Membuat video pendek dan desain untuk media sosial, lengkap dengan naskahnya. Salah satu konten saya ditonton 800 ribu kali di TikTok. Membangun alur kerja otomatis berbasis AI yang menghasilkan 25–30 video per bulan. Berbasis di Taiwan, terbuka untuk kerja remote dan proyek klien.</p></div></section>
       <section class="cv-sec" data-r><h3>Pengalaman</h3><div class="c">
         <div class="job"><b>Translator, merangkap Social Media &amp; Web Development</b><span class="when">世華, agensi tenaga kerja, Taiwan. Agustus 2026–sekarang, penuh waktu.</span>
           <ul><li>Mengelola 5 akun media sosial perusahaan dengan 4 template konten untuk TikTok, Facebook, dan Instagram.</li><li>Membuat alat pembuat video otomatis berbasis AI yang menghasilkan 25–30 video per bulan, sekitar 30 menit per video termasuk naskah.</li><li>Ditugaskan merancang dan membangun website perusahaan.</li><li>Merapikan sistem daftar kontak agar mudah dibaca dan dipakai tim.</li><li>Menerjemahkan materi kerja Mandarin ke Indonesia dengan bantuan alat AI.</li></ul></div>
@@ -921,7 +933,7 @@ body{background:radial-gradient(ellipse 34% 75% at 0% 62%,rgba(214,150,70,.27),r
       </ul>
     </div>
     <dl class="side glass" data-r="2">
-      <div><dt>Waktu di Taiwan sekarang</dt><dd class="clock" id="clock">--.--<small>GMT+8</small></dd></div>
+      <div><dt>Zona waktu</dt><dd class="tz">Taipei · GMT+8</dd><dd class="clock" id="clock">--.--<small>sekarang di sana</small></dd></div>
       <div><dt>Lokasi</dt><dd>Taiwan</dd></div>
       <div><dt>Terbuka untuk</dt><dd>Kerja remote penuh waktu, freelance, dan proyek klien</dd></div>
       <div><dt>Bahasa kerja</dt><dd>Indonesia dan Inggris</dd></div>
@@ -1461,14 +1473,18 @@ void main(){
   const uR = gl.getUniformLocation(pr, 'R'), uT = gl.getUniformLocation(pr, 'T');
   const SCALE = .5;
   const fit = () => { cv.width = Math.round(innerWidth * SCALE); cv.height = Math.round(innerHeight * SCALE); gl.viewport(0, 0, cv.width, cv.height); gl.uniform2f(uR, cv.width, cv.height); };
-  fit(); addEventListener('resize', fit);
-  let t0 = performance.now(), frozen = 8;
+  /* "Matikan animasi": laut digambar sekali lalu diam (tidak menggambar ulang tiap detik); saat dinyalakan lagi
+     ombak lanjut dari posisi terakhir, tidak melompat (20 Nov) */
+  let acc = 8, last = null, still = false;
+  fit(); addEventListener('resize', () => { fit(); still = false; });
+  const draw = () => { gl.uniform1f(uT, acc); gl.drawArrays(gl.TRIANGLES, 0, 3); };
   function sea(now) {
     requestAnimationFrame(sea);
-    if (document.hidden) return;
-    if (reduce) { gl.uniform1f(uT, frozen); gl.drawArrays(gl.TRIANGLES, 0, 3); return; }
-    frozen = (now - t0) / 1000 + 8;
-    gl.uniform1f(uT, frozen); gl.drawArrays(gl.TRIANGLES, 0, 3);
+    if (document.hidden) { last = null; return; }
+    if (reduce) { if (!still) { draw(); still = true; } last = null; return; }
+    still = false;
+    if (last !== null) acc += Math.min(now - last, 100) / 1000;
+    last = now; draw();
   }
   requestAnimationFrame(sea);
 })();
